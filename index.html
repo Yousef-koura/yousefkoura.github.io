@@ -91,6 +91,12 @@
             display: flex;
             gap: 2rem;
             list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-container li {
+            display: inline-block;
         }
 
         .nav-container a {
@@ -100,6 +106,7 @@
             font-size: 0.9rem;
             transition: 0.3s;
             position: relative;
+            display: inline-block;
         }
 
         .nav-container a::before {
@@ -274,7 +281,8 @@
         }
 
         .checkmark {
-            font-size: 2.5rem;
+            font-size: 2rem;
+            font-weight: 800;
             color: #10b981;
         }
 
@@ -354,20 +362,6 @@
             background: #ff00ff;
         }
 
-        .floating-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid rgba(0, 242, 255, 0.3);
-            transition: all 0.5s;
-        }
-
-        .floating-card:hover {
-            transform: translateY(-10px);
-            border-color: #ff00ff;
-        }
-
         .section-title {
             text-align: center;
             font-size: 3rem;
@@ -432,50 +426,213 @@
             background: rgba(255, 0, 255, 0.1);
         }
 
-        .education-card {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            margin-top: 3rem;
-            border: 1px solid rgba(0, 242, 255, 0.3);
+        .summary-text {
+            max-width: 800px;
+            margin: 0 auto;
             text-align: center;
-            transition: all 0.3s;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #ccc;
         }
 
-        .education-card:hover {
-            transform: translateY(-5px);
+        /* Modern Education Section */
+        .education-modern {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .edu-card {
+            background: linear-gradient(135deg, rgba(0, 242, 255, 0.05), rgba(124, 58, 237, 0.05));
+            border-radius: 28px;
+            padding: 2rem;
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .edu-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 242, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .edu-card:hover::before {
+            left: 100%;
+        }
+
+        .edu-card:hover {
+            transform: translateY(-8px);
             border-color: #ff00ff;
-            box-shadow: 0 10px 30px rgba(255, 0, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 242, 255, 0.15);
         }
 
-        .education-card h3 {
+        .edu-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(0, 242, 255, 0.3);
+        }
+
+        .edu-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #00f2ff20, #ff00ff20);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            transition: 0.3s;
+        }
+
+        .edu-card:hover .edu-icon {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #00f2ff40, #ff00ff40);
+        }
+
+        .edu-title {
+            flex: 1;
+        }
+
+        .edu-title h3 {
             font-size: 1.5rem;
             color: #00f2ff;
-            margin-bottom: 1rem;
+            margin-bottom: 0.3rem;
         }
 
-        .education-card .degree {
+        .edu-title .edu-date {
+            color: #ff00ff;
+            font-size: 0.85rem;
+        }
+
+        .edu-body {
+            padding-left: 0.5rem;
+        }
+
+        .edu-degree {
             font-size: 1.2rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
+            color: #fff;
         }
 
-        .education-card .university {
+        .edu-university {
             color: #aaa;
             margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .education-card .date {
-            color: #ff00ff;
+        .edu-university i {
+            color: #00f2ff;
             font-size: 0.9rem;
         }
 
-        .education-card .gpa {
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid rgba(0, 242, 255, 0.2);
+        .edu-gpa {
+            display: inline-block;
+            background: rgba(0, 242, 255, 0.15);
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin-top: 0.8rem;
+            border: 1px solid rgba(0, 242, 255, 0.3);
+        }
+
+        .edu-gpa span {
             color: #00f2ff;
+            font-weight: 600;
+        }
+
+        /* Contact Creative Section - WITH CLICKABLE LINKS */
+        .contact-creative {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .hologram-card {
+            background: linear-gradient(135deg, rgba(0, 242, 255, 0.08), rgba(124, 58, 237, 0.08));
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .hologram-card a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .hologram-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .hologram-card:hover::before {
+            opacity: 1;
+        }
+
+        .hologram-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: #ff00ff;
+            box-shadow: 0 20px 40px rgba(0, 242, 255, 0.2);
+        }
+
+        .hologram-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #00f2ff20, #ff00ff20);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.2rem;
+            transition: 0.3s;
+        }
+
+        .hologram-card:hover .hologram-icon {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #00f2ff40, #ff00ff40);
+        }
+
+        .hologram-icon i {
+            font-size: 2rem;
+        }
+
+        .hologram-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #00f2ff;
+        }
+
+        .hologram-card .value {
+            color: #ccc;
+            font-size: 0.9rem;
+            word-break: break-word;
         }
 
         .ai-chat {
@@ -601,18 +758,6 @@
             cursor: pointer;
         }
 
-        .social-link {
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .social-link:hover {
-            transform: translateY(-3px);
-            filter: drop-shadow(0 0 10px currentColor);
-        }
-
         @media (max-width: 968px) {
             .hero-section { padding-left: 5%; padding-right: 5%; }
             .hero-text h1 { font-size: 2.5rem; }
@@ -622,6 +767,7 @@
             .nav-container { gap: 1rem; flex-wrap: wrap; justify-content: center; }
             .section-title { font-size: 2rem; }
             .chat-window { width: 300px; right: -50px; }
+            .contact-creative { grid-template-columns: 1fr; gap: 1rem; }
         }
     </style>
 </head>
@@ -632,7 +778,7 @@
 <canvas id="networkCanvas"></canvas>
 <div class="glitch-overlay"></div>
 
-<!-- CV PDF Content - Populated with real data -->
+<!-- CV PDF Content -->
 <div id="cvPdfContent" style="display: none;">
     <div style="padding: 40px; font-family: 'Space Grotesk', sans-serif; background: white; color: black; max-width: 800px; margin: 0 auto;">
         <h1 style="color: #00f2ff; font-size: 32px; margin-bottom: 5px;">YOUSEF AHMED</h1>
@@ -640,46 +786,39 @@
         <hr style="border: 1px solid #00f2ff; margin-bottom: 20px;">
         
         <h3 style="color: #00f2ff; margin-top: 20px;">PROFESSIONAL SUMMARY</h3>
-        <p style="margin-bottom: 15px;">Mechatronics Engineering graduate (GPA 3.62) with hands-on experience building AI systems across computer vision, deep learning, and predictive modeling. Skilled in Python, TensorFlow, and YOLO-based object detection, with practical knowledge of MLOps workflows. Published researcher with a proven ability to take AI projects from concept to deployment — including an autonomous agricultural robot achieving 96% accuracy in the field.</p>
+        <p style="margin-bottom: 15px;">Mechatronics Engineering graduate (GPA 3.62) with hands-on experience building AI systems across computer vision, deep learning, and predictive modeling.</p>
         
         <h3 style="color: #00f2ff; margin-top: 20px;">EDUCATION</h3>
         <p><strong>B.Sc. Mechatronics Systems Engineering</strong><br>MSA University (supervised by University of Greenwich) | 2020 - 2024<br>GPA: 3.62 / 4.0</p>
         
         <h3 style="color: #00f2ff; margin-top: 20px;">EXPERIENCE</h3>
-        <p><strong>Machine Learning Engineer (Virtual Training)</strong><br>PioPetro | Jun 2024 - Aug 2024<br>Completed virtual training program on ML applications in the petroleum industry, covering Petroleum Exploration, Artificial Lift Technology, Well Intervention, and Well Stimulation.</p>
-        <p><strong>AI/ML Intern</strong><br>Information Technology Institute (ITI) | 2024<br>Applied Python for data analysis, preprocessing, and ML model implementation across supervised and unsupervised tasks.</p>
-        <p><strong>AI/ML Intern</strong><br>Digital HUB (D-HUB) | 2024<br>Built a breast cancer detection model achieving 95% accuracy, earning 3rd place in a competitive AI challenge co-hosted with the Electronics Research Institute.</p>
+        <p><strong>Machine Learning Engineer (Virtual Training)</strong><br>PioPetro | Jun 2024 - Aug 2024</p>
+        <p><strong>AI/ML Intern</strong><br>Information Technology Institute (ITI) | 2024</p>
+        <p><strong>AI/ML Intern</strong><br>Digital HUB (D-HUB) | 2024</p>
         
         <h3 style="color: #00f2ff; margin-top: 20px;">PROJECTS</h3>
-        <p><strong>Agri-Bot:</strong> AI-Powered Crop Disease Detection Robot - 96% accuracy at 20 FPS on NVIDIA Jetson Nano</p>
-        <p><strong>Ball Tracking Mobile Robot:</strong> 95% real-time detection accuracy with sub-5cm tracking error</p>
-        <p><strong>Steganography Image Detection:</strong> 90% classification accuracy for hidden data detection</p>
-        <p><strong>Automatic Color Sorting Machine:</strong> 98% accuracy, 25% throughput improvement</p>
-        <p><strong>Breast Cancer Detection Model:</strong> 95% accuracy - 3rd place challenge winner</p>
+        <p><strong>Agri-Bot:</strong> 96% accuracy • Ball Tracking Robot: 95% • Steganography: 90% • Color Sorting: 98% • Breast Cancer AI: 95%</p>
         
         <h3 style="color: #00f2ff; margin-top: 20px;">SKILLS</h3>
-        <p><strong>Programming:</strong> Python, C++, MATLAB</p>
-        <p><strong>ML/DL:</strong> Supervised & Unsupervised Learning, Neural Networks, Transfer Learning, CNNs, YOLOv8, TensorFlow</p>
-        <p><strong>Libraries:</strong> Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn, FastAPI</p>
-        <p><strong>MLOps:</strong> Git, GitHub, Docker, Kubernetes</p>
+        <p>Python, C++, MATLAB, TensorFlow, YOLOv8, Docker, Kubernetes, FastAPI, Git</p>
         
         <h3 style="color: #00f2ff; margin-top: 20px;">PUBLICATION</h3>
-        <p>Agri-Bot: AI-Powered Crop Disease Detection and Medication Recommendation Robot<br>Published at the 8th International Undergraduate Research Conference (IUGRC 8) - 2024</p>
+        <p>Agri-Bot: AI-Powered Crop Disease Detection - IUGRC 2024</p>
         
         <h3 style="color: #00f2ff; margin-top: 20px;">CERTIFICATIONS</h3>
-        <p>• Machine Learning Specialization - Coursera (2023)</p>
-        <p>• Supervised Machine Learning: Regression and Classification - Coursera (2023)</p>
-        <p>• Python 101 for Data Science - IBM Cognitive Class (2022)</p>
+        <p>Machine Learning Specialization • Supervised ML • Python for Data Science</p>
     </div>
 </div>
 
 <nav class="nav-ai">
     <ul class="nav-container">
-        <li><a href="#home">⌾ HOME</a></li>
-        <li><a href="#skills">◈ SKILLS</a></li>
-        <li><a href="#projects">◉ PROJECTS</a></li>
-        <li><a href="#experience">⌬ EXPERIENCE</a></li>
-        <li><a href="#contact">✧ CONTACT</a></li>
+        <li><a href="#home">HOME</a></li>
+        <li><a href="#summary">SUMMARY</a></li>
+        <li><a href="#experience">EXPERIENCE</a></li>
+        <li><a href="#skills">SKILLS</a></li>
+        <li><a href="#projects">PROJECTS</a></li>
+        <li><a href="#publication">PUBLICATION</a></li>
+        <li><a href="#contact">CONTACT</a></li>
     </ul>
 </nav>
 
@@ -701,13 +840,59 @@
         <div class="hero-3d" id="hero3d"></div>
     </section>
 
+    <!-- Neural Stats -->
     <div class="neural-stats">
         <div class="stat-neuron"><div class="stat-number" id="projectsCount">0</div><div>AI SYSTEMS</div><small>DEPLOYED</small></div>
-        <div class="stat-neuron"><div class="stat-number" id="accuracyStat">0%</div><div>MAX ACCURACY</div><small>YOLOv8 MODEL</small></div>
-        <div class="stat-neuron"><div class="checkmark" id="militaryCheck">✓</div><div>MILITARY SERVICE</div><small>COMPLETED</small></div>
+        <div class="stat-neuron"><div class="stat-number" id="certCount">0</div><div>CERTIFICATIONS</div><small>EARNED</small></div>
         <div class="stat-neuron"><div class="stat-number" id="pubCount">0</div><div>PUBLICATIONS</div><small>IUGRC 2024</small></div>
+        <div class="stat-neuron"><div class="checkmark" id="militaryCheck">✓</div><div>MILITARY SERVICE</div><small>COMPLETED</small></div>
     </div>
 
+    <!-- SUMMARY SECTION -->
+    <section id="summary">
+        <div class="container">
+            <h2 class="section-title">◈ PROFESSIONAL SUMMARY ◈</h2>
+            <div class="summary-text">
+                <p>Mechatronics Engineering graduate (GPA 3.62) with hands-on experience building AI systems across computer vision, deep learning, and predictive modeling. Skilled in Python, TensorFlow, and YOLO-based object detection, with practical knowledge of MLOps workflows. Published researcher with a proven ability to take AI projects from concept to deployment — including an autonomous agricultural robot achieving 96% accuracy in the field.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPERIENCE SECTION -->
+    <section id="experience">
+        <div class="container">
+            <h2 class="section-title">⌬ EXPERIENCE ⌬</h2>
+            <div class="timeline-neural" id="timelineGrid"></div>
+            
+            <!-- Modern Education Section -->
+            <h2 class="section-title" style="margin-top: 4rem;">🎓 EDUCATION</h2>
+            <div class="education-modern">
+                <div class="edu-card">
+                    <div class="edu-header">
+                        <div class="edu-icon">
+                            <i class="fas fa-graduation-cap" style="color: #00f2ff;"></i>
+                        </div>
+                        <div class="edu-title">
+                            <h3>MSA University</h3>
+                            <div class="edu-date">2020 - 2024</div>
+                        </div>
+                    </div>
+                    <div class="edu-body">
+                        <div class="edu-degree">B.Sc. Mechatronics Systems Engineering</div>
+                        <div class="edu-university">
+                            <i class="fas fa-university"></i>
+                            <span>Supervised by University of Greenwich, UK</span>
+                        </div>
+                        <div class="edu-gpa">
+                            📊 <span>GPA: 3.62 / 4.0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SKILLS SECTION -->
     <section id="skills">
         <div class="container">
             <h2 class="section-title">◈ AI SKILLS ◈</h2>
@@ -727,6 +912,7 @@
         </div>
     </section>
 
+    <!-- PROJECTS SECTION -->
     <section id="projects">
         <div class="container">
             <h2 class="section-title">◉ INTELLIGENCE PROJECTS ◉</h2>
@@ -734,43 +920,62 @@
         </div>
     </section>
 
-    <section id="experience">
+    <!-- PUBLICATION SECTION -->
+    <section id="publication">
         <div class="container">
-            <h2 class="section-title">⌬ EXPERIENCE ⌬</h2>
-            <div class="timeline-neural" id="timelineGrid"></div>
-            
-            <div class="education-card">
-                <h3>🎓 EDUCATION</h3>
-                <div class="degree">B.Sc. Mechatronics Systems Engineering</div>
-                <div class="university">MSA University (supervised by University of Greenwich)</div>
-                <div class="date">2020 - 2024</div>
-                <div class="gpa">GPA: 3.62 / 4.0</div>
+            <h2 class="section-title">📄 PUBLICATION</h2>
+            <div class="edu-card" style="max-width: 800px; margin: 0 auto; text-align: center;">
+                <div class="edu-header" style="justify-content: center;">
+                    <div class="edu-icon">
+                        <i class="fas fa-book" style="color: #ff00ff;"></i>
+                    </div>
+                    <div class="edu-title">
+                        <h3 style="color: #ff00ff;">International Research Conference</h3>
+                        <div class="edu-date">IUGRC 8 - 2024</div>
+                    </div>
+                </div>
+                <div class="edu-body">
+                    <div class="edu-degree">Agri-Bot: AI-Powered Crop Disease Detection and Medication Recommendation Robot</div>
+                    <div class="edu-university" style="justify-content: center;">
+                        <i class="fas fa-trophy"></i>
+                        <span>Published Research Paper</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- CONTACT SECTION - WITH CLICKABLE LINKS -->
     <section id="contact">
         <div class="container">
-            <h2 class="section-title">✧ CONNECT WITH MY NETWORK ✧</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-                <div class="floating-card">
-                    <i class="fas fa-envelope" style="font-size: 2rem; color: #00f2ff;"></i>
-                    <h3 style="margin: 1rem 0;">Quantum Communication</h3>
-                    <p>yousefahmed.ae20@gmail.com</p>
-                    <div style="display: flex; gap: 1.5rem; margin-top: 1.5rem;">
-                        <a href="https://github.com/Yousef-koura" target="_blank" class="social-link" style="color: #00f2ff; font-size: 1.8rem; transition: 0.3s;"><i class="fab fa-github"></i></a>
-                        <a href="https://www.linkedin.com/in/yousefkoura" target="_blank" class="social-link" style="color: #ff00ff; font-size: 1.8rem; transition: 0.3s;"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="social-link" style="color: #00f2ff; font-size: 1.8rem; transition: 0.3s;"><i class="fab fa-twitter"></i></a>
+            <h2 class="section-title">✧ CONNECT WITH ME ✧</h2>
+            <div class="contact-creative">
+                <!-- Email Card - mailto link -->
+                <a href="mailto:yousefahmed.ae20@gmail.com" class="hologram-card" style="text-decoration: none;">
+                    <div class="hologram-icon">
+                        <i class="fas fa-envelope" style="color: #00f2ff;"></i>
                     </div>
-                </div>
-                <div class="floating-card">
-                    <form id="contactForm">
-                        <input type="text" placeholder="YOUR NAME" style="width: 100%; padding: 0.8rem; margin-bottom: 1rem; background: rgba(255,255,255,0.1); border: 1px solid #00f2ff; border-radius: 10px; color: white;">
-                        <input type="email" placeholder="YOUR EMAIL" style="width: 100%; padding: 0.8rem; margin-bottom: 1rem; background: rgba(255,255,255,0.1); border: 1px solid #00f2ff; border-radius: 10px; color: white;">
-                        <textarea rows="4" placeholder="YOUR MESSAGE" style="width: 100%; padding: 0.8rem; margin-bottom: 1rem; background: rgba(255,255,255,0.1); border: 1px solid #00f2ff; border-radius: 10px; color: white;"></textarea>
-                        <button type="submit" style="width: 100%; background: linear-gradient(135deg, #00f2ff, #ff00ff); border: none; padding: 1rem; border-radius: 50px; color: white; font-weight: bold; cursor: pointer;">SEND MESSAGE</button>
-                    </form>
-                </div>
+                    <h3>Email</h3>
+                    <div class="value">yousefahmed.ae20@gmail.com</div>
+                </a>
+
+                <!-- GitHub Card - opens in new tab -->
+                <a href="https://github.com/Yousef-koura" target="_blank" class="hologram-card" style="text-decoration: none;">
+                    <div class="hologram-icon">
+                        <i class="fab fa-github" style="color: #00f2ff;"></i>
+                    </div>
+                    <h3>GitHub</h3>
+                    <div class="value">github.com/Yousef-koura</div>
+                </a>
+
+                <!-- LinkedIn Card - opens in new tab -->
+                <a href="https://www.linkedin.com/in/yousefkoura" target="_blank" class="hologram-card" style="text-decoration: none;">
+                    <div class="hologram-icon">
+                        <i class="fab fa-linkedin-in" style="color: #ff00ff;"></i>
+                    </div>
+                    <h3>LinkedIn</h3>
+                    <div class="value">linkedin.com/in/yousefkoura</div>
+                </a>
             </div>
         </div>
     </section>
@@ -784,10 +989,10 @@
             <span class="chat-status">● Online</span>
         </div>
         <div class="chat-messages" id="chatMessages">
-            <div class="chat-message bot-message">🤖: Hello! I'm Y.AI, your intelligent assistant. I can tell you about Yousef's projects, skills, experience, education, publications, and more. What would you like to know?</div>
+            <div class="chat-message bot-message">🤖: Hello! I'm Y.AI. Ask me about Yousef's projects, skills, or experience!</div>
         </div>
         <div class="chat-input">
-            <input type="text" id="chatInput" placeholder="Ask me anything about Yousef...">
+            <input type="text" id="chatInput" placeholder="Ask me anything...">
             <button id="sendChat">→</button>
         </div>
     </div>
@@ -795,204 +1000,49 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-    // ============ SMART CHATBOT WITH CONTEXT ============
+    // Smart Chatbot
     class SmartChatbot {
         constructor() {
-            this.context = {
-                lastTopic: null,
-                conversationHistory: [],
-                userPreferences: {}
-            };
-            
             this.knowledgeBase = {
                 name: "Yousef Ahmed",
-                fullName: "Yousef Ahmed",
                 role: "AI Engineer & Mechatronics Specialist",
-                education: {
-                    degree: "B.Sc. Mechatronics Systems Engineering",
-                    university: "MSA University (supervised by University of Greenwich)",
-                    duration: "2020 - 2024",
-                    gpa: "3.62/4.0"
-                },
-                experiences: [
-                    { role: "Machine Learning Engineer", company: "PioPetro", period: "Jun 2024 - Aug 2024", details: "Petroleum AI applications • Virtual training program" },
-                    { role: "AI/ML Intern", company: "Information Technology Institute (ITI)", period: "Jul 2023 - Sep 2023", details: "Python, ML models, statistical foundations" },
-                    { role: "AI/ML Intern", company: "Digital HUB (D-HUB)", period: "Aug 2023", details: "Breast Cancer Detection • 3rd Place Winner" }
-                ],
-                projects: [
-                    { name: "Agri-Bot", accuracy: "96%", description: "Autonomous crop disease detection on Jetson Nano", tech: ["YOLOv8", "MobileNetV2"] },
-                    { name: "Ball Tracking Robot", accuracy: "95%", description: "Real-time object detection with sub-5cm error", tech: ["OpenCV", "Robotics"] },
-                    { name: "Steganography Detector", accuracy: "90%", description: "Hidden data detection in images", tech: ["CNN", "Deep Learning"] },
-                    { name: "Color Sorting Machine", accuracy: "98%", description: "AI-driven sorting with 25% throughput improvement", tech: ["Computer Vision"] },
-                    { name: "Breast Cancer AI", accuracy: "95%", description: "3rd place challenge winner", tech: ["Scikit-learn", "ML"] }
-                ],
-                technicalSkills: {
-                    programming: ["Python", "C++", "MATLAB"],
-                    aiMl: ["Supervised Learning", "Unsupervised Learning", "Neural Networks", "TensorFlow", "YOLOv8", "CNNs", "Scikit-learn"],
-                    dataScience: ["NumPy", "Pandas", "Seaborn", "Matplotlib"],
-                    mlops: ["Docker", "Kubernetes", "FastAPI", "Git", "GitHub"]
-                },
-                softSkills: ["Problem-solving", "Time management", "Adaptability", "Researcher"],
-                publication: {
-                    title: "Agri-Bot: AI-Powered Crop Disease Detection and Medication Recommendation Robot",
-                    conference: "8th International Undergraduate Research Conference (IUGRC 8)",
-                    year: "2024"
-                },
-                certifications: [
-                    "Machine Learning Specialization - Coursera (2023)",
-                    "Supervised Machine Learning: Regression and Classification - Coursera (2023)",
-                    "Python 101 for Data Science - IBM Cognitive Class (2022)"
-                ],
-                militaryService: "Completed",
-                availability: "Available for work",
-                gpa: "3.62"
+                education: "B.Sc. Mechatronics Systems Engineering from MSA University, GPA 3.62",
+                projects: ["Agri-Bot (96%)", "Ball Tracking Robot (95%)", "Steganography Detector (90%)", "Color Sorting Machine (98%)", "Breast Cancer AI (95%)"],
+                skills: ["Python", "C++", "MATLAB", "TensorFlow", "YOLOv8", "Docker", "Kubernetes", "FastAPI"],
+                publication: "Agri-Bot: AI-Powered Crop Disease Detection at IUGRC 2024",
+                certifications: 3
             };
         }
         
-        recognizeIntent(message) {
+        async processMessage(message) {
             const msg = message.toLowerCase();
-            const intents = {
-                greeting: /^(hi|hello|hey|greetings|sup|hola)/,
-                name: /\b(name|who|your|you are|call you)\b/i,
-                projects: /\b(project|built|create|develop|make|work on)\b/i,
-                bestProject: /\b(best|favorite|top|impressive|achievement|proud)\s*(project|work)/i,
-                accuracy: /\b(accuracy|percent|score|rate|success)\b/i,
-                skills: /\b(skill|know|technology|tech|stack|competenc|expert|proficient)\b/i,
-                experience: /\b(experience|work|job|intern|position|career|did|where)\b/i,
-                education: /\b(education|study|learn|university|college|degree|major|gpa)\b/i,
-                publication: /\b(publication|paper|research|conference|published|write)\b/i,
-                certification: /\b(certification|certificate|coursera|ibm|course|learned)\b/i,
-                military: /\b(military|army|service|completed|finished)\b/i,
-                contact: /\b(contact|email|reach|connect|hire|work with)\b/i,
-                availability: /\b(available|free|open|looking|job|position|role)\b/i,
-                thanks: /\b(thank|thanks|appreciate|grateful)\b/i,
-                goodbye: /\b(bye|goodbye|see you|exit|quit)\b/i,
-                help: /\b(help|what can you|what do you|capabilities|features)\b/i
-            };
-            for (const [intent, pattern] of Object.entries(intents)) {
-                if (pattern.test(msg)) return intent;
-            }
-            return "general";
-        }
-        
-        generateResponse(intent, message) {
-            const msg = message.toLowerCase();
-            switch(intent) {
-                case "greeting":
-                    return "Hello! 👋 I'm Y.AI. Ask me anything about Yousef's professional journey!";
-                case "name":
-                    return `My master is ${this.knowledgeBase.name}, a ${this.knowledgeBase.role} with a passion for building intelligent systems.`;
-                case "projects":
-                    if (msg.includes("count") || msg.includes("many")) {
-                        return `Yousef has completed ${this.knowledgeBase.projects.length} major AI projects. His most notable is ${this.knowledgeBase.projects[0].name} with ${this.knowledgeBase.projects[0].accuracy} accuracy.`;
-                    }
-                    const projectList = this.knowledgeBase.projects.map(p => `${p.name} (${p.accuracy})`).join(", ");
-                    return `Yousef's key projects include: ${projectList}. His Agri-Bot project achieved 96% accuracy for crop disease detection on Jetson Nano.`;
-                case "bestProject":
-                    return `Yousef's most impressive project is ${this.knowledgeBase.projects[0].name} with ${this.knowledgeBase.projects[0].accuracy} accuracy. It's an autonomous robot that detects crop diseases in real-time at 20 FPS on edge hardware.`;
-                case "accuracy":
-                    return `Yousef's highest accuracy is 96% achieved with the Agri-Bot crop disease detection system. His other projects achieved: ${this.knowledgeBase.projects.slice(1,4).map(p => `${p.name} (${p.accuracy})`).join(", ")}.`;
-                case "skills":
-                    if (msg.includes("programming") || msg.includes("language")) {
-                        return `Programming languages: ${this.knowledgeBase.technicalSkills.programming.join(", ")}.`;
-                    }
-                    if (msg.includes("ml") || msg.includes("ai") || msg.includes("deep")) {
-                        return `AI/ML skills: ${this.knowledgeBase.technicalSkills.aiMl.slice(0,6).join(", ")}. He's proficient in TensorFlow, YOLOv8, and all core ML algorithms.`;
-                    }
-                    if (msg.includes("soft")) {
-                        return `Soft skills: ${this.knowledgeBase.softSkills.join(", ")}.`;
-                    }
-                    return `Yousef is skilled in ${this.knowledgeBase.technicalSkills.programming.join(", ")} for programming, ${this.knowledgeBase.technicalSkills.aiMl.slice(0,4).join(", ")} for AI/ML, plus MLOps tools like ${this.knowledgeBase.technicalSkills.mlops.join(", ")}.`;
-                case "experience":
-                    const expDesc = this.knowledgeBase.experiences.map(e => `${e.role} at ${e.company} (${e.period})`).join("; ");
-                    return `Yousef's experience includes: ${expDesc}. He specializes in ML applications, computer vision, and AI model deployment.`;
-                case "education":
-                    return `🎓 ${this.knowledgeBase.education.degree} from ${this.knowledgeBase.education.university} (${this.knowledgeBase.education.duration}) with a GPA of ${this.knowledgeBase.education.gpa}.`;
-                case "publication":
-                    return `📄 ${this.knowledgeBase.publication.title}. Published at ${this.knowledgeBase.publication.conference} in ${this.knowledgeBase.publication.year}.`;
-                case "certification":
-                    return `📜 Certifications: ${this.knowledgeBase.certifications.join("; ")}.`;
-                case "military":
-                    return `✅ Military service: ${this.knowledgeBase.militaryService}. He has completed his mandatory service.`;
-                case "availability":
-                    return `💼 ${this.knowledgeBase.name} is ${this.knowledgeBase.availability}. He's open to AI/ML engineering roles, research collaborations, and innovative computer vision projects.`;
-                case "contact":
-                    return `📧 You can reach Yousef at yousef.ahmed@ai-engine.com or connect via GitHub (https://github.com/Yousef-koura) or LinkedIn (https://www.linkedin.com/in/yousefkoura).`;
-                case "thanks":
-                    return "You're welcome! 🎯 Anything else you'd like to know about Yousef's work?";
-                case "goodbye":
-                    return "Goodbye! 👋 Feel free to come back if you have more questions about Yousef's portfolio.";
-                case "help":
-                    return `🤖 I can tell you about:\n• Projects & their accuracy\n• Technical & soft skills\n• Work experience & education\n• Publications & certifications\n• Contact & availability\nJust ask naturally!`;
-                default:
-                    if (msg.includes("agri") || msg.includes("bot")) {
-                        return `Agri-Bot is Yousef's graduation project - an autonomous agricultural robot achieving 96% disease detection accuracy at 20 FPS using YOLOv8 on Jetson Nano.`;
-                    }
-                    if (msg.includes("yolo") || msg.includes("object detection")) {
-                        return `Yousef specializes in YOLOv8 for real-time object detection, achieving 95-96% accuracy in his robotics and agriculture projects.`;
-                    }
-                    if (msg.includes("tensorflow") || msg.includes("keras")) {
-                        return `Yes, Yousef is proficient in TensorFlow for building and deploying deep learning models across computer vision and predictive analytics.`;
-                    }
-                    if (msg.includes("docker") || msg.includes("kubernetes")) {
-                        return `Yousef has practical MLOps knowledge including Docker and Kubernetes for model deployment and scaling.`;
-                    }
-                    return `I don't have specific information about that. Try asking about Yousef's projects, skills, experience, education, or publications!`;
-            }
-        }
-        
-        async processMessage(userMessage) {
-            const intent = this.recognizeIntent(userMessage);
-            this.context.lastTopic = intent;
-            return this.generateResponse(intent, userMessage);
-        }
-        
-        getSuggestions() {
-            return [
-                "What projects has Yousef built?",
-                "Tell me about Agri-Bot",
-                "What's his highest accuracy?",
-                "What skills does he have?",
-                "Where did he study?",
-                "Is he available for work?"
-            ];
+            if (msg.includes('project')) return `Yousef has 5 major AI projects: ${this.knowledgeBase.projects.join(", ")}. His Agri-Bot achieved 96% accuracy.`;
+            if (msg.includes('skill')) return `Yousef specializes in: ${this.knowledgeBase.skills.join(", ")}.`;
+            if (msg.includes('accuracy')) return `Highest accuracy is 96% with Agri-Bot. Other projects: Ball Tracking (95%), Color Sorting (98%), Breast Cancer (95%).`;
+            if (msg.includes('education') || msg.includes('study')) return `🎓 ${this.knowledgeBase.education}`;
+            if (msg.includes('publication')) return `📄 ${this.knowledgeBase.publication}`;
+            if (msg.includes('experience')) return `Yousef interned at PioPetro (2024), ITI (2023), and Digital HUB (2023), winning 3rd place for Breast Cancer Detection.`;
+            return "Ask me about Yousef's projects, skills, accuracy, education, publication, or experience!";
         }
     }
     
-    // Initialize smart chatbot
     const chatbot = new SmartChatbot();
     
-    // DOM Elements
+    // Chat DOM
     const chatToggle = document.getElementById('chatToggle');
     const chatWindow = document.getElementById('chatWindow');
     const chatInput = document.getElementById('chatInput');
     const sendChat = document.getElementById('sendChat');
     const chatMessages = document.getElementById('chatMessages');
     
-    chatToggle.addEventListener('click', () => {
-        chatWindow.classList.toggle('active');
-    });
+    chatToggle.addEventListener('click', () => chatWindow.classList.toggle('active'));
     
     function addMessage(text, isUser = false) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `chat-message ${isUser ? 'user-message' : 'bot-message'}`;
-        messageDiv.innerHTML = isUser ? `👤: ${text}` : `🤖: ${text}`;
-        chatMessages.appendChild(messageDiv);
+        const div = document.createElement('div');
+        div.className = `chat-message ${isUser ? 'user-message' : 'bot-message'}`;
+        div.innerHTML = isUser ? `👤: ${text}` : `🤖: ${text}`;
+        chatMessages.appendChild(div);
         chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-    
-    function showTypingIndicator() {
-        const typingDiv = document.createElement('div');
-        typingDiv.className = 'chat-message bot-message typing-indicator';
-        typingDiv.id = 'typingIndicator';
-        typingDiv.innerHTML = '🤖: <span class="typing-indicator">thinking...</span>';
-        chatMessages.appendChild(typingDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-    
-    function removeTypingIndicator() {
-        const indicator = document.getElementById('typingIndicator');
-        if (indicator) indicator.remove();
     }
     
     async function sendMessage() {
@@ -1000,68 +1050,24 @@
         if (!msg) return;
         addMessage(msg, true);
         chatInput.value = '';
-        showTypingIndicator();
+        addMessage("🔍 Let me check...");
         setTimeout(async () => {
-            removeTypingIndicator();
+            const lastMsg = chatMessages.lastChild;
+            if (lastMsg && lastMsg.innerHTML.includes("Let me check")) lastMsg.remove();
             const response = await chatbot.processMessage(msg);
             addMessage(response);
         }, 500);
     }
     
     sendChat.addEventListener('click', sendMessage);
-    chatInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') sendMessage();
-    });
-    
-    function addSuggestionChips() {
-        const suggestions = chatbot.getSuggestions();
-        const suggestionDiv = document.createElement('div');
-        suggestionDiv.className = 'chat-message bot-message';
-        suggestionDiv.style.display = 'flex';
-        suggestionDiv.style.flexWrap = 'wrap';
-        suggestionDiv.style.gap = '0.5rem';
-        suggestionDiv.style.marginTop = '0.5rem';
-        
-        suggestions.forEach(suggestion => {
-            const chip = document.createElement('span');
-            chip.textContent = suggestion;
-            chip.style.background = 'rgba(0, 242, 255, 0.2)';
-            chip.style.padding = '0.3rem 0.8rem';
-            chip.style.borderRadius = '20px';
-            chip.style.fontSize = '0.7rem';
-            chip.style.cursor = 'pointer';
-            chip.style.transition = '0.2s';
-            chip.onmouseenter = () => chip.style.background = 'rgba(0, 242, 255, 0.4)';
-            chip.onmouseleave = () => chip.style.background = 'rgba(0, 242, 255, 0.2)';
-            chip.onclick = () => {
-                chatInput.value = suggestion;
-                sendMessage();
-            };
-            suggestionDiv.appendChild(chip);
-        });
-        chatMessages.appendChild(suggestionDiv);
-    }
-    
-    setTimeout(() => {
-        addSuggestionChips();
-    }, 1000);
-    
-    // ============ END OF SMART CHATBOT ============
+    chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
     
     // PDF Download
     document.getElementById('downloadBtn').addEventListener('click', function() {
-        const element = document.getElementById('cvPdfContent');
-        const opt = {
-            margin: [0.5, 0.5, 0.5, 0.5],
-            filename: 'Yousef_Ahmed_CV.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true },
-            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-        };
-        html2pdf().set(opt).from(element).save();
+        html2pdf().from(document.getElementById('cvPdfContent')).set({ filename: 'Yousef_Ahmed_CV.pdf' }).save();
     });
     
-    // Neural Network Background Animation
+    // Neural Network Background
     const canvas = document.getElementById('networkCanvas');
     const ctx = canvas.getContext('2d');
     function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -1110,7 +1116,7 @@
         cursorDot.style.top = e.clientY + 'px';
     });
     
-    // Dynamic Role Animation
+    // Dynamic Role
     const roles = ["MACHINE LEARNING", "DEEP LEARNING", "RESEARCHER", "MECHATRONICS ENGINEER"];
     let roleIdx = 0;
     const roleElement = document.getElementById('dynamicRole');
@@ -1123,7 +1129,7 @@
         }, 200);
     }, 2500);
     
-    // Creative Quotes
+    // Quotes
     const quotes = ["\"Training neural networks to see beyond human vision.\"", "\"96% accuracy isn't just a number, it's a revolution.\"", "\"Building AI that understands the language of crops.\"", "\"Where mechatronics meets artificial intelligence.\""];
     let quoteIdx = 0;
     const quoteElement = document.getElementById('creativeQuote');
@@ -1137,7 +1143,7 @@
     }, 4000);
     quoteElement.innerHTML = quotes[0];
     
-    // Projects Data
+    // Data
     const projectsData = [
         { icon: "fas fa-seedling", title: "AGRI-BOT", desc: "Autonomous crop disease detection • 96% accuracy • 20 FPS on Jetson Nano", tech: ["YOLOv8", "MobileNetV2", "Edge AI"] },
         { icon: "fas fa-futbol", title: "BALL TRACKING ROBOT", desc: "95% detection accuracy • sub-5cm tracking error", tech: ["OpenCV", "PID Control", "Robotics"] },
@@ -1146,14 +1152,12 @@
         { icon: "fas fa-ribbon", title: "BREAST CANCER AI", desc: "95% accuracy • 3rd place challenge winner", tech: ["Scikit-learn", "ML Models"] }
     ];
     
-    // Skills Data
     const skillsData = [
         { title: "PROGRAMMING LANGUAGES", items: ["Python", "C++", "MATLAB"] },
         { title: "AI & DEEP LEARNING", items: ["Supervised Learning", "Unsupervised Learning", "Neural Networks", "NumPy", "Pandas", "Seaborn", "Matplotlib", "Scikit-learn", "TensorFlow"] },
         { title: "MLOps", items: ["Docker", "Kubernetes", "FastAPI", "Git", "GitHub"] }
     ];
     
-    // Timeline Data
     const timelineData = [
         { date: "Jun 2024 - Aug 2024", title: "Machine Learning Engineer", org: "PioPetro", desc: "Petroleum AI applications • Virtual training program" },
         { date: "Jul 2023 - Sep 2023", title: "AI/ML Intern", org: "Information Technology Institute (ITI)", desc: "Python, ML models, statistical foundations" },
@@ -1161,18 +1165,16 @@
     ];
     
     function loadProjects() {
-        const grid = document.getElementById('projectsGrid');
-        grid.innerHTML = projectsData.map(proj => `
+        document.getElementById('projectsGrid').innerHTML = projectsData.map(proj => `
             <div class="project-ai-card">
                 <div class="project-header"><div class="project-icon"><i class="${proj.icon}"></i></div><h3>${proj.title}</h3></div>
-                <div style="padding: 1.5rem;"><p style="color: #aaa;">${proj.desc}</p><div style="display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;">${proj.tech.map(t => `<span style="background: rgba(0,242,255,0.2); padding: 0.2rem 0.8rem; border-radius: 20px; font-size: 0.7rem;">${t}</span>`).join('')}</div></div>
+                <div style="padding: 1.5rem;"><p style="color: #aaa;">${proj.desc}</p><div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">${proj.tech.map(t => `<span style="background:rgba(0,242,255,0.2); padding:0.2rem 0.8rem; border-radius:20px; font-size:0.7rem;">${t}</span>`).join('')}</div></div>
             </div>
         `).join('');
     }
     
     function loadSkills() {
-        const grid = document.getElementById('skillsGrid');
-        grid.innerHTML = skillsData.map(skill => `
+        document.getElementById('skillsGrid').innerHTML = skillsData.map(skill => `
             <div class="project-ai-card">
                 <div class="project-header"><div class="project-icon"><i class="fas fa-microchip"></i></div><h3>${skill.title}</h3></div>
                 <div style="padding: 1.5rem;"><div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">${skill.items.map(item => `<span style="background: linear-gradient(135deg, #00f2ff20, #ff00ff20); padding: 0.5rem 1rem; border-radius: 10px; font-size: 0.85rem;">${item}</span>`).join('')}</div></div>
@@ -1181,15 +1183,8 @@
     }
     
     function loadTimeline() {
-        const grid = document.getElementById('timelineGrid');
-        grid.innerHTML = timelineData.map(item => `
-            <div class="timeline-node">
-                <div class="timeline-dot-neural"></div>
-                <div class="timeline-date" style="color: #00f2ff; font-weight: bold;">${item.date}</div>
-                <div class="timeline-title" style="font-size: 1.2rem; margin: 0.5rem 0;">${item.title}</div>
-                <div class="timeline-org" style="color: #ff00ff;">${item.org}</div>
-                <div class="timeline-desc" style="color: #aaa;">${item.desc}</div>
-            </div>
+        document.getElementById('timelineGrid').innerHTML = timelineData.map(item => `
+            <div class="timeline-node"><div class="timeline-dot-neural"></div><div class="timeline-date" style="color:#00f2ff; font-weight:bold;">${item.date}</div><div class="timeline-title" style="font-size:1.2rem; margin:0.5rem 0;">${item.title}</div><div class="timeline-org" style="color:#ff00ff;">${item.org}</div><div class="timeline-desc" style="color:#aaa;">${item.desc}</div></div>
         `).join('');
     }
     
@@ -1205,16 +1200,9 @@
     
     setTimeout(() => {
         animateCounter(document.getElementById('projectsCount'), 12);
-        animateCounter(document.getElementById('accuracyStat'), 96, '%');
+        animateCounter(document.getElementById('certCount'), 3);
         animateCounter(document.getElementById('pubCount'), 1);
     }, 500);
-    
-    // Contact Form
-    document.getElementById('contactForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        alert('✨ Message sent! Yousef will connect soon.');
-        e.target.reset();
-    });
     
     // Smooth Scroll
     document.querySelectorAll('.nav-container a').forEach(anchor => {
