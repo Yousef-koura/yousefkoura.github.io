@@ -46,14 +46,15 @@
             transform: translate(-50%, -50%);
         }
 
-        #networkCanvas {
+        /* New Dynamic Background - Particle Wave */
+        #particleCanvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: 0;
-            opacity: 0.6;
+            opacity: 0.8;
         }
 
         .glitch-overlay {
@@ -435,7 +436,6 @@
             color: #ccc;
         }
 
-        /* Modern Education Section */
         .education-modern {
             max-width: 900px;
             margin: 0 auto;
@@ -552,7 +552,6 @@
             font-weight: 600;
         }
 
-        /* Contact Creative Section - WITH CLICKABLE LINKS */
         .contact-creative {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -775,7 +774,7 @@
 
 <div class="cursor"></div>
 <div class="cursor-dot"></div>
-<canvas id="networkCanvas"></canvas>
+<canvas id="particleCanvas"></canvas>
 <div class="glitch-overlay"></div>
 
 <!-- CV PDF Content -->
@@ -864,7 +863,6 @@
             <h2 class="section-title">⌬ EXPERIENCE ⌬</h2>
             <div class="timeline-neural" id="timelineGrid"></div>
             
-            <!-- Modern Education Section -->
             <h2 class="section-title" style="margin-top: 4rem;">🎓 EDUCATION</h2>
             <div class="education-modern">
                 <div class="edu-card">
@@ -945,12 +943,11 @@
         </div>
     </section>
 
-    <!-- CONTACT SECTION - WITH CLICKABLE LINKS -->
+    <!-- CONTACT SECTION -->
     <section id="contact">
         <div class="container">
             <h2 class="section-title">✧ CONNECT WITH ME ✧</h2>
             <div class="contact-creative">
-                <!-- Email Card - mailto link -->
                 <a href="mailto:yousefahmed.ae20@gmail.com" class="hologram-card" style="text-decoration: none;">
                     <div class="hologram-icon">
                         <i class="fas fa-envelope" style="color: #00f2ff;"></i>
@@ -959,7 +956,6 @@
                     <div class="value">yousefahmed.ae20@gmail.com</div>
                 </a>
 
-                <!-- GitHub Card - opens in new tab -->
                 <a href="https://github.com/Yousef-koura" target="_blank" class="hologram-card" style="text-decoration: none;">
                     <div class="hologram-icon">
                         <i class="fab fa-github" style="color: #00f2ff;"></i>
@@ -968,7 +964,6 @@
                     <div class="value">github.com/Yousef-koura</div>
                 </a>
 
-                <!-- LinkedIn Card - opens in new tab -->
                 <a href="https://www.linkedin.com/in/yousefkoura" target="_blank" class="hologram-card" style="text-decoration: none;">
                     <div class="hologram-icon">
                         <i class="fab fa-linkedin-in" style="color: #ff00ff;"></i>
@@ -1000,7 +995,127 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-    // Smart Chatbot
+    // ============ NEW DYNAMIC PARTICLE WAVE BACKGROUND ============
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    
+    function resizeCanvas() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    
+    // Particle class
+    class Particle {
+        constructor() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.size = Math.random() * 2 + 0.5;
+            this.speedX = (Math.random() - 0.5) * 0.5;
+            this.speedY = (Math.random() - 0.5) * 0.3;
+            this.color = `rgba(${Math.random() * 100 + 100}, ${Math.random() * 100 + 100}, 255, ${Math.random() * 0.3 + 0.1})`;
+            this.angle = Math.random() * Math.PI * 2;
+            this.radius = Math.random() * 100 + 50;
+            this.orbitSpeed = (Math.random() - 0.5) * 0.01;
+        }
+        
+        update() {
+            // Wave motion
+            this.angle += this.orbitSpeed;
+            this.x += Math.sin(this.angle) * 0.5 + this.speedX;
+            this.y += Math.cos(this.angle * 0.5) * 0.3 + this.speedY;
+            
+            // Wrap around edges
+            if (this.x < -50) this.x = width + 50;
+            if (this.x > width + 50) this.x = -50;
+            if (this.y < -50) this.y = height + 50;
+            if (this.y > height + 50) this.y = -50;
+        }
+        
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+        }
+    }
+    
+    // Create particles
+    const particles = [];
+    const particleCount = 150;
+    for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+    }
+    
+    // Create connecting lines between nearby particles
+    function drawConnections() {
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 120) {
+                    const opacity = (1 - distance / 120) * 0.15;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.strokeStyle = `rgba(0, 242, 255, ${opacity})`;
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+                }
+            }
+        }
+    }
+    
+    // Animate background
+    function animateBackground() {
+        ctx.clearRect(0, 0, width, height);
+        
+        // Draw gradient background
+        const gradient = ctx.createLinearGradient(0, 0, width, height);
+        gradient.addColorStop(0, '#0a0a1a');
+        gradient.addColorStop(0.5, '#0f0f2a');
+        gradient.addColorStop(1, '#050510');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, width, height);
+        
+        // Draw glowing orbs
+        for (let i = 0; i < 5; i++) {
+            const time = Date.now() * 0.001;
+            const x = width * (0.2 + Math.sin(time * 0.3 + i) * 0.1);
+            const y = height * (0.3 + Math.cos(time * 0.2 + i) * 0.15);
+            const radius = 150 + Math.sin(time * 0.5 + i) * 30;
+            
+            const grad = ctx.createRadialGradient(x, y, 0, x, y, radius);
+            grad.addColorStop(0, `rgba(${100 + i * 30}, ${150 + i * 20}, 255, 0.08)`);
+            grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        // Update and draw particles
+        for (let particle of particles) {
+            particle.update();
+            particle.draw();
+        }
+        
+        drawConnections();
+        
+        requestAnimationFrame(animateBackground);
+    }
+    
+    animateBackground();
+    
+    // ============ SMART CHATBOT ============
     class SmartChatbot {
         constructor() {
             this.knowledgeBase = {
@@ -1066,45 +1181,6 @@
     document.getElementById('downloadBtn').addEventListener('click', function() {
         html2pdf().from(document.getElementById('cvPdfContent')).set({ filename: 'Yousef_Ahmed_CV.pdf' }).save();
     });
-    
-    // Neural Network Background
-    const canvas = document.getElementById('networkCanvas');
-    const ctx = canvas.getContext('2d');
-    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-    
-    let nodes = [];
-    for(let i = 0; i < 80; i++) {
-        nodes.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5, radius: Math.random() * 2 + 1 });
-    }
-    
-    function animateNetwork() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for(let node of nodes) {
-            node.x += node.vx; node.y += node.vy;
-            if(node.x < 0 || node.x > canvas.width) node.vx *= -1;
-            if(node.y < 0 || node.y > canvas.height) node.vy *= -1;
-            ctx.beginPath();
-            ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(0, 242, 255, ${Math.random() * 0.5 + 0.3})`;
-            ctx.fill();
-        }
-        for(let i = 0; i < nodes.length; i++) {
-            for(let j = i + 1; j < nodes.length; j++) {
-                const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y, dist = Math.sqrt(dx * dx + dy * dy);
-                if(dist < 100) {
-                    ctx.beginPath();
-                    ctx.moveTo(nodes[i].x, nodes[i].y);
-                    ctx.lineTo(nodes[j].x, nodes[j].y);
-                    ctx.strokeStyle = `rgba(255, 0, 255, ${0.2 * (1 - dist / 100)})`;
-                    ctx.stroke();
-                }
-            }
-        }
-        requestAnimationFrame(animateNetwork);
-    }
-    animateNetwork();
     
     // Custom Cursor
     const cursor = document.querySelector('.cursor');
