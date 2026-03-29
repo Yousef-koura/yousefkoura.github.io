@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Yousef Ahmed | AI Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00f2ff;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: 0.1s;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-dot {
+            width: 5px;
+            height: 5px;
+            background: #ff00ff;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: 0.05s;
+            transform: translate(-50%, -50%);
+        }
+
+        #networkCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        .glitch-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            mix-blend-mode: overlay;
+            background: repeating-linear-gradient(0deg, rgba(0, 255, 255, 0.03) 0px, rgba(0, 255, 255, 0.03) 2px, transparent 2px, transparent 6px);
+            animation: scan 8s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        .nav-ai {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 60px;
+            padding: 0.8rem 2rem;
+            border: 1px solid rgba(0, 242, 255, 0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-container a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .nav-container a::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00f2ff, #ff00ff);
+            transition: width 0.3s;
+        }
+
+        .nav-container a:hover::before {
+            width: 100%;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            position: relative;
+            overflow: hidden;
+            padding-left: 8%;
+        }
+
+        .hero-3d {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 500px;
+            height: 500px;
+            pointer-events: none;
+        }
+
+        .hero-text {
+            max-width: 650px;
+            z-index: 10;
+            text-align: left;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: #10b981;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulseGreen 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulseGreen {
+            0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            50% { opacity: 0.7; transform: scale(1.1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+        }
+
+        .ai-badge {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, #00f2ff20, #ff00ff20);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 242, 255, 0.5);
+        }
+
+        .hero-text h1 {
+            font-size: 5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #fff, #00f2ff, #ff00ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: textGradient 3s ease infinite;
+            background-size: 200% 200%;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes textGradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .ai-role {
+            font-size: 1.5rem;
+            margin: 1rem 0;
+            color: #00f2ff;
+        }
+
+        .ai-quote {
+            color: #888;
+            margin: 1rem 0;
+            border-left: 3px solid #ff00ff;
+            padding-left: 1rem;
+            font-style: italic;
+        }
+
+        .btn-ai {
+            background: linear-gradient(135deg, #00f2ff, #ff00ff);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-ai:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 242, 255, 0.3);
+        }
+
+        .btn-ai-outline {
+            background: transparent;
+            border: 2px solid #00f2ff;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            color: #00f2ff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-ai-outline:hover {
+            background: rgba(0, 242, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .neural-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin: 3rem auto;
+            max-width: 1200px;
+            position: relative;
+            z-index: 10;
+            padding: 0 2rem;
+        }
+
+        .stat-neuron {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            transition: 0.3s;
+        }
+
+        .stat-neuron:hover {
+            transform: scale(1.05);
+            border-color: #ff00ff;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00f2ff, #ff00ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .checkmark {
+            font-size: 2.5rem;
+            color: #10b981;
+        }
+
+        .project-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .project-ai-card {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            transition: all 0.4s;
+            position: relative;
+        }
+
+        .project-ai-card:hover {
+            transform: translateY(-10px);
+            border-color: #ff00ff;
+        }
+
+        .project-header {
+            background: linear-gradient(135deg, #00f2ff20, #ff00ff20);
+            padding: 1.5rem;
+        }
+
+        .project-icon {
+            font-size: 2.5rem;
+            animation: floatIcon 3s ease-in-out infinite;
+        }
+
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .timeline-neural {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline-neural::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #00f2ff, #ff00ff, #00f2ff);
+        }
+
+        .timeline-node {
+            position: relative;
+            padding-left: 50px;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-dot-neural {
+            position: absolute;
+            left: 12px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            background: #00f2ff;
+            border-radius: 50%;
+            transition: 0.3s;
+            box-shadow: 0 0 10px #00f2ff;
+        }
+
+        .timeline-node:hover .timeline-dot-neural {
+            transform: scale(1.5);
+            background: #ff00ff;
+        }
+
+        .floating-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            transition: all 0.5s;
+        }
+
+        .floating-card:hover {
+            transform: translateY(-10px);
+            border-color: #ff00ff;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #fff, #00f2ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 6rem 0;
+            position: relative;
+        }
+
+        .skills-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .soft-skills-section {
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .soft-skills-section h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff, #ff00ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .soft-skills-grid {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .soft-skill-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1rem 2rem;
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .soft-skill-card:hover {
+            transform: translateY(-5px);
+            border-color: #ff00ff;
+            background: rgba(255, 0, 255, 0.1);
+        }
+
+        .education-card {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 3rem;
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .education-card:hover {
+            transform: translateY(-5px);
+            border-color: #ff00ff;
+            box-shadow: 0 10px 30px rgba(255, 0, 255, 0.1);
+        }
+
+        .education-card h3 {
+            font-size: 1.5rem;
+            color: #00f2ff;
+            margin-bottom: 1rem;
+        }
+
+        .education-card .degree {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .education-card .university {
+            color: #aaa;
+            margin-bottom: 0.5rem;
+        }
+
+        .education-card .date {
+            color: #ff00ff;
+            font-size: 0.9rem;
+        }
+
+        .education-card .gpa {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0, 242, 255, 0.2);
+            color: #00f2ff;
+        }
+
+        .ai-chat {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .chat-toggle {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #00f2ff, #ff00ff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.5);
+            transition: 0.3s;
+        }
+
+        .chat-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 360px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            display: none;
+            overflow: hidden;
+        }
+
+        .chat-window.active {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #00f2ff20, #ff00ff20);
+            padding: 1rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-status {
+            font-size: 0.7rem;
+            color: #10b981;
+        }
+
+        .chat-messages {
+            height: 350px;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .chat-message {
+            margin-bottom: 0.8rem;
+            animation: messageFade 0.3s ease;
+        }
+
+        @keyframes messageFade {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-message {
+            color: #ff00ff;
+            text-align: right;
+        }
+
+        .bot-message {
+            color: #00f2ff;
+            text-align: left;
+        }
+
+        .typing-indicator {
+            color: #888;
+            font-style: italic;
+            animation: blinkText 1s infinite;
+        }
+
+        @keyframes blinkText {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid rgba(0, 242, 255, 0.3);
+        }
+
+        .chat-input input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            padding: 0.5rem;
+            color: white;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        .chat-input button {
+            background: #00f2ff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            margin-left: 0.5rem;
+            cursor: pointer;
+        }
+
+        .social-link {
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px);
+            filter: drop-shadow(0 0 10px currentColor);
+        }
+
+        @media (max-width: 968px) {
+            .hero-section { padding-left: 5%; padding-right: 5%; }
+            .hero-text h1 { font-size: 2.5rem; }
+            .hero-3d { display: none; }
+            .neural-stats { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+            .nav-ai { width: 90%; padding: 0.5rem; }
+            .nav-container { gap: 1rem; flex-wrap: wrap; justify-content: center; }
+            .section-title { font-size: 2rem; }
+            .chat-window { width: 300px; right: -50px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="cursor"></div>
+<div class="cursor-dot"></div>
+<canvas id="networkCanvas"></canvas>
+<div class="glitch-overlay"></div>
+
+<!-- CV PDF Content - Populated with real data -->
+<div id="cvPdfContent" style="display: none;">
+    <div style="padding: 40px; font-family: 'Space Grotesk', sans-serif; background: white; color: black; max-width: 800px; margin: 0 auto;">
+        <h1 style="color: #00f2ff; font-size: 32px; margin-bottom: 5px;">YOUSEF AHMED</h1>
+        <h2 style="color: #666; font-size: 18px; margin-bottom: 20px;">Mechatronics Engineer | AI Specialist</h2>
+        <hr style="border: 1px solid #00f2ff; margin-bottom: 20px;">
+        
+        <h3 style="color: #00f2ff; margin-top: 20px;">PROFESSIONAL SUMMARY</h3>
+        <p style="margin-bottom: 15px;">Mechatronics Engineering graduate (GPA 3.62) with hands-on experience building AI systems across computer vision, deep learning, and predictive modeling. Skilled in Python, TensorFlow, and YOLO-based object detection, with practical knowledge of MLOps workflows. Published researcher with a proven ability to take AI projects from concept to deployment — including an autonomous agricultural robot achieving 96% accuracy in the field.</p>
+        
+        <h3 style="color: #00f2ff; margin-top: 20px;">EDUCATION</h3>
+        <p><strong>B.Sc. Mechatronics Systems Engineering</strong><br>MSA University (supervised by University of Greenwich) | 2020 - 2024<br>GPA: 3.62 / 4.0</p>
+        
+        <h3 style="color: #00f2ff; margin-top: 20px;">EXPERIENCE</h3>
+        <p><strong>Machine Learning Engineer (Virtual Training)</strong><br>PioPetro | Jun 2024 - Aug 2024<br>Completed virtual training program on ML applications in the petroleum industry, covering Petroleum Exploration, Artificial Lift Technology, Well Intervention, and Well Stimulation.</p>
+        <p><strong>AI/ML Intern</strong><br>Information Technology Institute (ITI) | 2024<br>Applied Python for data analysis, preprocessing, and ML model implementation across supervised and unsupervised tasks.</p>
+        <p><strong>AI/ML Intern</strong><br>Digital HUB (D-HUB) | 2024<br>Built a breast cancer detection model achieving 95% accuracy, earning 3rd place in a competitive AI challenge co-hosted with the Electronics Research Institute.</p>
+        
+        <h3 style="color: #00f2ff; margin-top: 20px;">PROJECTS</h3>
+        <p><strong>Agri-Bot:</strong> AI-Powered Crop Disease Detection Robot - 96% accuracy at 20 FPS on NVIDIA Jetson Nano</p>
+        <p><strong>Ball Tracking Mobile Robot:</strong> 95% real-time detection accuracy with sub-5cm tracking error</p>
+        <p><strong>Steganography Image Detection:</strong> 90% classification accuracy for hidden data detection</p>
+        <p><strong>Automatic Color Sorting Machine:</strong> 98% accuracy, 25% throughput improvement</p>
+        <p><strong>Breast Cancer Detection Model:</strong> 95% accuracy - 3rd place challenge winner</p>
+        
+        <h3 style="color: #00f2ff; margin-top: 20px;">SKILLS</h3>
+        <p><strong>Programming:</strong> Python, C++, MATLAB</p>
+        <p><strong>ML/DL:</strong> Supervised & Unsupervised Learning, Neural Networks, Transfer Learning, CNNs, YOLOv8, TensorFlow</p>
+        <p><strong>Libraries:</strong> Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn, FastAPI</p>
+        <p><strong>MLOps:</strong> Git, GitHub, Docker, Kubernetes</p>
+        
+        <h3 style="color: #00f2ff; margin-top: 20px;">PUBLICATION</h3>
+        <p>Agri-Bot: AI-Powered Crop Disease Detection and Medication Recommendation Robot<br>Published at the 8th International Undergraduate Research Conference (IUGRC 8) - 2024</p>
+        
+        <h3 style="color: #00f2ff; margin-top: 20px;">CERTIFICATIONS</h3>
+        <p>• Machine Learning Specialization - Coursera (2023)</p>
+        <p>• Supervised Machine Learning: Regression and Classification - Coursera (2023)</p>
+        <p>• Python 101 for Data Science - IBM Cognitive Class (2022)</p>
+    </div>
+</div>
+
+<nav class="nav-ai">
+    <ul class="nav-container">
+        <li><a href="#home">⌾ HOME</a></li>
+        <li><a href="#skills">◈ SKILLS</a></li>
+        <li><a href="#projects">◉ PROJECTS</a></li>
+        <li><a href="#experience">⌬ EXPERIENCE</a></li>
+        <li><a href="#contact">✧ CONTACT</a></li>
+    </ul>
+</nav>
+
+<div class="content">
+    <section id="home" class="hero-section">
+        <div class="hero-text">
+            <div class="ai-badge">
+                <span class="status-dot"></span>
+                AVAILABLE FOR WORK
+            </div>
+            <h1>YOUSEF<br>AHMED</h1>
+            <div class="ai-role" id="dynamicRole">[MACHINE LEARNING]</div>
+            <div class="ai-quote" id="creativeQuote"></div>
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <button class="btn-ai" id="downloadBtn"><i class="fas fa-download"></i> DOWNLOAD CV (PDF)</button>
+                <button class="btn-ai-outline" onclick="document.getElementById('projects').scrollIntoView({behavior: 'smooth'})"><i class="fas fa-robot"></i> EXPLORE PROJECTS</button>
+            </div>
+        </div>
+        <div class="hero-3d" id="hero3d"></div>
+    </section>
+
+    <div class="neural-stats">
+        <div class="stat-neuron"><div class="stat-number" id="projectsCount">0</div><div>AI SYSTEMS</div><small>DEPLOYED</small></div>
+        <div class="stat-neuron"><div class="stat-number" id="accuracyStat">0%</div><div>MAX ACCURACY</div><small>YOLOv8 MODEL</small></div>
+        <div class="stat-neuron"><div class="checkmark" id="militaryCheck">✓</div><div>MILITARY SERVICE</div><small>COMPLETED</small></div>
+        <div class="stat-neuron"><div class="stat-number" id="pubCount">0</div><div>PUBLICATIONS</div><small>IUGRC 2024</small></div>
+    </div>
+
+    <section id="skills">
+        <div class="container">
+            <h2 class="section-title">◈ AI SKILLS ◈</h2>
+            <div class="skills-wrapper">
+                <div class="project-showcase" id="skillsGrid"></div>
+                
+                <div class="soft-skills-section">
+                    <h3>⟡ SOFT SKILLS ⟡</h3>
+                    <div class="soft-skills-grid">
+                        <div class="soft-skill-card">Problem-solving</div>
+                        <div class="soft-skill-card">Time management</div>
+                        <div class="soft-skill-card">Adaptability</div>
+                        <div class="soft-skill-card">Researcher</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <div class="container">
+            <h2 class="section-title">◉ INTELLIGENCE PROJECTS ◉</h2>
+            <div class="project-showcase" id="projectsGrid"></div>
+        </div>
+    </section>
+
+    <section id="experience">
+        <div class="container">
+            <h2 class="section-title">⌬ EXPERIENCE ⌬</h2>
+            <div class="timeline-neural" id="timelineGrid"></div>
+            
+            <div class="education-card">
+                <h3>🎓 EDUCATION</h3>
+                <div class="degree">B.Sc. Mechatronics Systems Engineering</div>
+                <div class="university">MSA University (supervised by University of Greenwich)</div>
+                <div class="date">2020 - 2024</div>
+                <div class="gpa">GPA: 3.62 / 4.0</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">✧ CONNECT WITH MY NETWORK ✧</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <div class="floating-card">
+                    <i class="fas fa-envelope" style="font-size: 2rem; color: #00f2ff;"></i>
+                    <h3 style="margin: 1rem 0;">Quantum Communication</h3>
+                    <p>yousefahmed.ae20@gmail.com</p>
+                    <div style="display: flex; gap: 1.5rem; margin-top: 1.5rem;">
+                        <a href="https://github.com/Yousef-koura" target="_blank" class="social-link" style="color: #00f2ff; font-size: 1.8rem; transition: 0.3s;"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/yousefkoura" target="_blank" class="social-link" style="color: #ff00ff; font-size: 1.8rem; transition: 0.3s;"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link" style="color: #00f2ff; font-size: 1.8rem; transition: 0.3s;"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="floating-card">
+                    <form id="contactForm">
+                        <input type="text" placeholder="YOUR NAME" style="width: 100%; padding: 0.8rem; margin-bottom: 1rem; background: rgba(255,255,255,0.1); border: 1px solid #00f2ff; border-radius: 10px; color: white;">
+                        <input type="email" placeholder="YOUR EMAIL" style="width: 100%; padding: 0.8rem; margin-bottom: 1rem; background: rgba(255,255,255,0.1); border: 1px solid #00f2ff; border-radius: 10px; color: white;">
+                        <textarea rows="4" placeholder="YOUR MESSAGE" style="width: 100%; padding: 0.8rem; margin-bottom: 1rem; background: rgba(255,255,255,0.1); border: 1px solid #00f2ff; border-radius: 10px; color: white;"></textarea>
+                        <button type="submit" style="width: 100%; background: linear-gradient(135deg, #00f2ff, #ff00ff); border: none; padding: 1rem; border-radius: 50px; color: white; font-weight: bold; cursor: pointer;">SEND MESSAGE</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="ai-chat">
+    <div class="chat-toggle" id="chatToggle"><i class="fas fa-robot" style="font-size: 1.5rem;"></i></div>
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <span><i class="fas fa-brain"></i> Y.AI Assistant</span>
+            <span class="chat-status">● Online</span>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-message bot-message">🤖: Hello! I'm Y.AI, your intelligent assistant. I can tell you about Yousef's projects, skills, experience, education, publications, and more. What would you like to know?</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Ask me anything about Yousef...">
+            <button id="sendChat">→</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+    // ============ SMART CHATBOT WITH CONTEXT ============
+    class SmartChatbot {
+        constructor() {
+            this.context = {
+                lastTopic: null,
+                conversationHistory: [],
+                userPreferences: {}
+            };
+            
+            this.knowledgeBase = {
+                name: "Yousef Ahmed",
+                fullName: "Yousef Ahmed",
+                role: "AI Engineer & Mechatronics Specialist",
+                education: {
+                    degree: "B.Sc. Mechatronics Systems Engineering",
+                    university: "MSA University (supervised by University of Greenwich)",
+                    duration: "2020 - 2024",
+                    gpa: "3.62/4.0"
+                },
+                experiences: [
+                    { role: "Machine Learning Engineer", company: "PioPetro", period: "Jun 2024 - Aug 2024", details: "Petroleum AI applications • Virtual training program" },
+                    { role: "AI/ML Intern", company: "Information Technology Institute (ITI)", period: "Jul 2023 - Sep 2023", details: "Python, ML models, statistical foundations" },
+                    { role: "AI/ML Intern", company: "Digital HUB (D-HUB)", period: "Aug 2023", details: "Breast Cancer Detection • 3rd Place Winner" }
+                ],
+                projects: [
+                    { name: "Agri-Bot", accuracy: "96%", description: "Autonomous crop disease detection on Jetson Nano", tech: ["YOLOv8", "MobileNetV2"] },
+                    { name: "Ball Tracking Robot", accuracy: "95%", description: "Real-time object detection with sub-5cm error", tech: ["OpenCV", "Robotics"] },
+                    { name: "Steganography Detector", accuracy: "90%", description: "Hidden data detection in images", tech: ["CNN", "Deep Learning"] },
+                    { name: "Color Sorting Machine", accuracy: "98%", description: "AI-driven sorting with 25% throughput improvement", tech: ["Computer Vision"] },
+                    { name: "Breast Cancer AI", accuracy: "95%", description: "3rd place challenge winner", tech: ["Scikit-learn", "ML"] }
+                ],
+                technicalSkills: {
+                    programming: ["Python", "C++", "MATLAB"],
+                    aiMl: ["Supervised Learning", "Unsupervised Learning", "Neural Networks", "TensorFlow", "YOLOv8", "CNNs", "Scikit-learn"],
+                    dataScience: ["NumPy", "Pandas", "Seaborn", "Matplotlib"],
+                    mlops: ["Docker", "Kubernetes", "FastAPI", "Git", "GitHub"]
+                },
+                softSkills: ["Problem-solving", "Time management", "Adaptability", "Researcher"],
+                publication: {
+                    title: "Agri-Bot: AI-Powered Crop Disease Detection and Medication Recommendation Robot",
+                    conference: "8th International Undergraduate Research Conference (IUGRC 8)",
+                    year: "2024"
+                },
+                certifications: [
+                    "Machine Learning Specialization - Coursera (2023)",
+                    "Supervised Machine Learning: Regression and Classification - Coursera (2023)",
+                    "Python 101 for Data Science - IBM Cognitive Class (2022)"
+                ],
+                militaryService: "Completed",
+                availability: "Available for work",
+                gpa: "3.62"
+            };
+        }
+        
+        recognizeIntent(message) {
+            const msg = message.toLowerCase();
+            const intents = {
+                greeting: /^(hi|hello|hey|greetings|sup|hola)/,
+                name: /\b(name|who|your|you are|call you)\b/i,
+                projects: /\b(project|built|create|develop|make|work on)\b/i,
+                bestProject: /\b(best|favorite|top|impressive|achievement|proud)\s*(project|work)/i,
+                accuracy: /\b(accuracy|percent|score|rate|success)\b/i,
+                skills: /\b(skill|know|technology|tech|stack|competenc|expert|proficient)\b/i,
+                experience: /\b(experience|work|job|intern|position|career|did|where)\b/i,
+                education: /\b(education|study|learn|university|college|degree|major|gpa)\b/i,
+                publication: /\b(publication|paper|research|conference|published|write)\b/i,
+                certification: /\b(certification|certificate|coursera|ibm|course|learned)\b/i,
+                military: /\b(military|army|service|completed|finished)\b/i,
+                contact: /\b(contact|email|reach|connect|hire|work with)\b/i,
+                availability: /\b(available|free|open|looking|job|position|role)\b/i,
+                thanks: /\b(thank|thanks|appreciate|grateful)\b/i,
+                goodbye: /\b(bye|goodbye|see you|exit|quit)\b/i,
+                help: /\b(help|what can you|what do you|capabilities|features)\b/i
+            };
+            for (const [intent, pattern] of Object.entries(intents)) {
+                if (pattern.test(msg)) return intent;
+            }
+            return "general";
+        }
+        
+        generateResponse(intent, message) {
+            const msg = message.toLowerCase();
+            switch(intent) {
+                case "greeting":
+                    return "Hello! 👋 I'm Y.AI. Ask me anything about Yousef's professional journey!";
+                case "name":
+                    return `My master is ${this.knowledgeBase.name}, a ${this.knowledgeBase.role} with a passion for building intelligent systems.`;
+                case "projects":
+                    if (msg.includes("count") || msg.includes("many")) {
+                        return `Yousef has completed ${this.knowledgeBase.projects.length} major AI projects. His most notable is ${this.knowledgeBase.projects[0].name} with ${this.knowledgeBase.projects[0].accuracy} accuracy.`;
+                    }
+                    const projectList = this.knowledgeBase.projects.map(p => `${p.name} (${p.accuracy})`).join(", ");
+                    return `Yousef's key projects include: ${projectList}. His Agri-Bot project achieved 96% accuracy for crop disease detection on Jetson Nano.`;
+                case "bestProject":
+                    return `Yousef's most impressive project is ${this.knowledgeBase.projects[0].name} with ${this.knowledgeBase.projects[0].accuracy} accuracy. It's an autonomous robot that detects crop diseases in real-time at 20 FPS on edge hardware.`;
+                case "accuracy":
+                    return `Yousef's highest accuracy is 96% achieved with the Agri-Bot crop disease detection system. His other projects achieved: ${this.knowledgeBase.projects.slice(1,4).map(p => `${p.name} (${p.accuracy})`).join(", ")}.`;
+                case "skills":
+                    if (msg.includes("programming") || msg.includes("language")) {
+                        return `Programming languages: ${this.knowledgeBase.technicalSkills.programming.join(", ")}.`;
+                    }
+                    if (msg.includes("ml") || msg.includes("ai") || msg.includes("deep")) {
+                        return `AI/ML skills: ${this.knowledgeBase.technicalSkills.aiMl.slice(0,6).join(", ")}. He's proficient in TensorFlow, YOLOv8, and all core ML algorithms.`;
+                    }
+                    if (msg.includes("soft")) {
+                        return `Soft skills: ${this.knowledgeBase.softSkills.join(", ")}.`;
+                    }
+                    return `Yousef is skilled in ${this.knowledgeBase.technicalSkills.programming.join(", ")} for programming, ${this.knowledgeBase.technicalSkills.aiMl.slice(0,4).join(", ")} for AI/ML, plus MLOps tools like ${this.knowledgeBase.technicalSkills.mlops.join(", ")}.`;
+                case "experience":
+                    const expDesc = this.knowledgeBase.experiences.map(e => `${e.role} at ${e.company} (${e.period})`).join("; ");
+                    return `Yousef's experience includes: ${expDesc}. He specializes in ML applications, computer vision, and AI model deployment.`;
+                case "education":
+                    return `🎓 ${this.knowledgeBase.education.degree} from ${this.knowledgeBase.education.university} (${this.knowledgeBase.education.duration}) with a GPA of ${this.knowledgeBase.education.gpa}.`;
+                case "publication":
+                    return `📄 ${this.knowledgeBase.publication.title}. Published at ${this.knowledgeBase.publication.conference} in ${this.knowledgeBase.publication.year}.`;
+                case "certification":
+                    return `📜 Certifications: ${this.knowledgeBase.certifications.join("; ")}.`;
+                case "military":
+                    return `✅ Military service: ${this.knowledgeBase.militaryService}. He has completed his mandatory service.`;
+                case "availability":
+                    return `💼 ${this.knowledgeBase.name} is ${this.knowledgeBase.availability}. He's open to AI/ML engineering roles, research collaborations, and innovative computer vision projects.`;
+                case "contact":
+                    return `📧 You can reach Yousef at yousef.ahmed@ai-engine.com or connect via GitHub (https://github.com/Yousef-koura) or LinkedIn (https://www.linkedin.com/in/yousefkoura).`;
+                case "thanks":
+                    return "You're welcome! 🎯 Anything else you'd like to know about Yousef's work?";
+                case "goodbye":
+                    return "Goodbye! 👋 Feel free to come back if you have more questions about Yousef's portfolio.";
+                case "help":
+                    return `🤖 I can tell you about:\n• Projects & their accuracy\n• Technical & soft skills\n• Work experience & education\n• Publications & certifications\n• Contact & availability\nJust ask naturally!`;
+                default:
+                    if (msg.includes("agri") || msg.includes("bot")) {
+                        return `Agri-Bot is Yousef's graduation project - an autonomous agricultural robot achieving 96% disease detection accuracy at 20 FPS using YOLOv8 on Jetson Nano.`;
+                    }
+                    if (msg.includes("yolo") || msg.includes("object detection")) {
+                        return `Yousef specializes in YOLOv8 for real-time object detection, achieving 95-96% accuracy in his robotics and agriculture projects.`;
+                    }
+                    if (msg.includes("tensorflow") || msg.includes("keras")) {
+                        return `Yes, Yousef is proficient in TensorFlow for building and deploying deep learning models across computer vision and predictive analytics.`;
+                    }
+                    if (msg.includes("docker") || msg.includes("kubernetes")) {
+                        return `Yousef has practical MLOps knowledge including Docker and Kubernetes for model deployment and scaling.`;
+                    }
+                    return `I don't have specific information about that. Try asking about Yousef's projects, skills, experience, education, or publications!`;
+            }
+        }
+        
+        async processMessage(userMessage) {
+            const intent = this.recognizeIntent(userMessage);
+            this.context.lastTopic = intent;
+            return this.generateResponse(intent, userMessage);
+        }
+        
+        getSuggestions() {
+            return [
+                "What projects has Yousef built?",
+                "Tell me about Agri-Bot",
+                "What's his highest accuracy?",
+                "What skills does he have?",
+                "Where did he study?",
+                "Is he available for work?"
+            ];
+        }
+    }
+    
+    // Initialize smart chatbot
+    const chatbot = new SmartChatbot();
+    
+    // DOM Elements
+    const chatToggle = document.getElementById('chatToggle');
+    const chatWindow = document.getElementById('chatWindow');
+    const chatInput = document.getElementById('chatInput');
+    const sendChat = document.getElementById('sendChat');
+    const chatMessages = document.getElementById('chatMessages');
+    
+    chatToggle.addEventListener('click', () => {
+        chatWindow.classList.toggle('active');
+    });
+    
+    function addMessage(text, isUser = false) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chat-message ${isUser ? 'user-message' : 'bot-message'}`;
+        messageDiv.innerHTML = isUser ? `👤: ${text}` : `🤖: ${text}`;
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    
+    function showTypingIndicator() {
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'chat-message bot-message typing-indicator';
+        typingDiv.id = 'typingIndicator';
+        typingDiv.innerHTML = '🤖: <span class="typing-indicator">thinking...</span>';
+        chatMessages.appendChild(typingDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    
+    function removeTypingIndicator() {
+        const indicator = document.getElementById('typingIndicator');
+        if (indicator) indicator.remove();
+    }
+    
+    async function sendMessage() {
+        const msg = chatInput.value.trim();
+        if (!msg) return;
+        addMessage(msg, true);
+        chatInput.value = '';
+        showTypingIndicator();
+        setTimeout(async () => {
+            removeTypingIndicator();
+            const response = await chatbot.processMessage(msg);
+            addMessage(response);
+        }, 500);
+    }
+    
+    sendChat.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+    
+    function addSuggestionChips() {
+        const suggestions = chatbot.getSuggestions();
+        const suggestionDiv = document.createElement('div');
+        suggestionDiv.className = 'chat-message bot-message';
+        suggestionDiv.style.display = 'flex';
+        suggestionDiv.style.flexWrap = 'wrap';
+        suggestionDiv.style.gap = '0.5rem';
+        suggestionDiv.style.marginTop = '0.5rem';
+        
+        suggestions.forEach(suggestion => {
+            const chip = document.createElement('span');
+            chip.textContent = suggestion;
+            chip.style.background = 'rgba(0, 242, 255, 0.2)';
+            chip.style.padding = '0.3rem 0.8rem';
+            chip.style.borderRadius = '20px';
+            chip.style.fontSize = '0.7rem';
+            chip.style.cursor = 'pointer';
+            chip.style.transition = '0.2s';
+            chip.onmouseenter = () => chip.style.background = 'rgba(0, 242, 255, 0.4)';
+            chip.onmouseleave = () => chip.style.background = 'rgba(0, 242, 255, 0.2)';
+            chip.onclick = () => {
+                chatInput.value = suggestion;
+                sendMessage();
+            };
+            suggestionDiv.appendChild(chip);
+        });
+        chatMessages.appendChild(suggestionDiv);
+    }
+    
+    setTimeout(() => {
+        addSuggestionChips();
+    }, 1000);
+    
+    // ============ END OF SMART CHATBOT ============
+    
+    // PDF Download
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+        const element = document.getElementById('cvPdfContent');
+        const opt = {
+            margin: [0.5, 0.5, 0.5, 0.5],
+            filename: 'Yousef_Ahmed_CV.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(element).save();
+    });
+    
+    // Neural Network Background Animation
+    const canvas = document.getElementById('networkCanvas');
+    const ctx = canvas.getContext('2d');
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    
+    let nodes = [];
+    for(let i = 0; i < 80; i++) {
+        nodes.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5, radius: Math.random() * 2 + 1 });
+    }
+    
+    function animateNetwork() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for(let node of nodes) {
+            node.x += node.vx; node.y += node.vy;
+            if(node.x < 0 || node.x > canvas.width) node.vx *= -1;
+            if(node.y < 0 || node.y > canvas.height) node.vy *= -1;
+            ctx.beginPath();
+            ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(0, 242, 255, ${Math.random() * 0.5 + 0.3})`;
+            ctx.fill();
+        }
+        for(let i = 0; i < nodes.length; i++) {
+            for(let j = i + 1; j < nodes.length; j++) {
+                const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y, dist = Math.sqrt(dx * dx + dy * dy);
+                if(dist < 100) {
+                    ctx.beginPath();
+                    ctx.moveTo(nodes[i].x, nodes[i].y);
+                    ctx.lineTo(nodes[j].x, nodes[j].y);
+                    ctx.strokeStyle = `rgba(255, 0, 255, ${0.2 * (1 - dist / 100)})`;
+                    ctx.stroke();
+                }
+            }
+        }
+        requestAnimationFrame(animateNetwork);
+    }
+    animateNetwork();
+    
+    // Custom Cursor
+    const cursor = document.querySelector('.cursor');
+    const cursorDot = document.querySelector('.cursor-dot');
+    document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+        cursorDot.style.left = e.clientX + 'px';
+        cursorDot.style.top = e.clientY + 'px';
+    });
+    
+    // Dynamic Role Animation
+    const roles = ["MACHINE LEARNING", "DEEP LEARNING", "RESEARCHER", "MECHATRONICS ENGINEER"];
+    let roleIdx = 0;
+    const roleElement = document.getElementById('dynamicRole');
+    setInterval(() => {
+        roleElement.style.opacity = '0';
+        setTimeout(() => {
+            roleIdx = (roleIdx + 1) % roles.length;
+            roleElement.innerHTML = `[${roles[roleIdx]}]`;
+            roleElement.style.opacity = '1';
+        }, 200);
+    }, 2500);
+    
+    // Creative Quotes
+    const quotes = ["\"Training neural networks to see beyond human vision.\"", "\"96% accuracy isn't just a number, it's a revolution.\"", "\"Building AI that understands the language of crops.\"", "\"Where mechatronics meets artificial intelligence.\""];
+    let quoteIdx = 0;
+    const quoteElement = document.getElementById('creativeQuote');
+    setInterval(() => {
+        quoteElement.style.opacity = '0';
+        setTimeout(() => {
+            quoteIdx = (quoteIdx + 1) % quotes.length;
+            quoteElement.innerHTML = quotes[quoteIdx];
+            quoteElement.style.opacity = '1';
+        }, 300);
+    }, 4000);
+    quoteElement.innerHTML = quotes[0];
+    
+    // Projects Data
+    const projectsData = [
+        { icon: "fas fa-seedling", title: "AGRI-BOT", desc: "Autonomous crop disease detection • 96% accuracy • 20 FPS on Jetson Nano", tech: ["YOLOv8", "MobileNetV2", "Edge AI"] },
+        { icon: "fas fa-futbol", title: "BALL TRACKING ROBOT", desc: "95% detection accuracy • sub-5cm tracking error", tech: ["OpenCV", "PID Control", "Robotics"] },
+        { icon: "fas fa-shield-alt", title: "STEGANOGRAPHY DETECTOR", desc: "Hidden data detection • 90% classification accuracy", tech: ["CNN", "Deep Learning"] },
+        { icon: "fas fa-palette", title: "COLOR SORTING MACHINE", desc: "98% accuracy • 25% throughput improvement", tech: ["Computer Vision", "Embedded AI"] },
+        { icon: "fas fa-ribbon", title: "BREAST CANCER AI", desc: "95% accuracy • 3rd place challenge winner", tech: ["Scikit-learn", "ML Models"] }
+    ];
+    
+    // Skills Data
+    const skillsData = [
+        { title: "PROGRAMMING LANGUAGES", items: ["Python", "C++", "MATLAB"] },
+        { title: "AI & DEEP LEARNING", items: ["Supervised Learning", "Unsupervised Learning", "Neural Networks", "NumPy", "Pandas", "Seaborn", "Matplotlib", "Scikit-learn", "TensorFlow"] },
+        { title: "MLOps", items: ["Docker", "Kubernetes", "FastAPI", "Git", "GitHub"] }
+    ];
+    
+    // Timeline Data
+    const timelineData = [
+        { date: "Jun 2024 - Aug 2024", title: "Machine Learning Engineer", org: "PioPetro", desc: "Petroleum AI applications • Virtual training program" },
+        { date: "Jul 2023 - Sep 2023", title: "AI/ML Intern", org: "Information Technology Institute (ITI)", desc: "Python, ML models, statistical foundations" },
+        { date: "Aug 2023", title: "AI/ML Intern", org: "Digital HUB (D-HUB)", desc: "Breast Cancer Detection • 3rd Place Winner" }
+    ];
+    
+    function loadProjects() {
+        const grid = document.getElementById('projectsGrid');
+        grid.innerHTML = projectsData.map(proj => `
+            <div class="project-ai-card">
+                <div class="project-header"><div class="project-icon"><i class="${proj.icon}"></i></div><h3>${proj.title}</h3></div>
+                <div style="padding: 1.5rem;"><p style="color: #aaa;">${proj.desc}</p><div style="display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;">${proj.tech.map(t => `<span style="background: rgba(0,242,255,0.2); padding: 0.2rem 0.8rem; border-radius: 20px; font-size: 0.7rem;">${t}</span>`).join('')}</div></div>
+            </div>
+        `).join('');
+    }
+    
+    function loadSkills() {
+        const grid = document.getElementById('skillsGrid');
+        grid.innerHTML = skillsData.map(skill => `
+            <div class="project-ai-card">
+                <div class="project-header"><div class="project-icon"><i class="fas fa-microchip"></i></div><h3>${skill.title}</h3></div>
+                <div style="padding: 1.5rem;"><div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">${skill.items.map(item => `<span style="background: linear-gradient(135deg, #00f2ff20, #ff00ff20); padding: 0.5rem 1rem; border-radius: 10px; font-size: 0.85rem;">${item}</span>`).join('')}</div></div>
+            </div>
+        `).join('');
+    }
+    
+    function loadTimeline() {
+        const grid = document.getElementById('timelineGrid');
+        grid.innerHTML = timelineData.map(item => `
+            <div class="timeline-node">
+                <div class="timeline-dot-neural"></div>
+                <div class="timeline-date" style="color: #00f2ff; font-weight: bold;">${item.date}</div>
+                <div class="timeline-title" style="font-size: 1.2rem; margin: 0.5rem 0;">${item.title}</div>
+                <div class="timeline-org" style="color: #ff00ff;">${item.org}</div>
+                <div class="timeline-desc" style="color: #aaa;">${item.desc}</div>
+            </div>
+        `).join('');
+    }
+    
+    function animateCounter(element, target, suffix = '') {
+        let current = 0;
+        const increment = target / 50;
+        const interval = setInterval(() => {
+            current += increment;
+            if (current >= target) { element.textContent = target + suffix; clearInterval(interval); }
+            else { element.textContent = Math.floor(current) + suffix; }
+        }, 20);
+    }
+    
+    setTimeout(() => {
+        animateCounter(document.getElementById('projectsCount'), 12);
+        animateCounter(document.getElementById('accuracyStat'), 96, '%');
+        animateCounter(document.getElementById('pubCount'), 1);
+    }, 500);
+    
+    // Contact Form
+    document.getElementById('contactForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('✨ Message sent! Yousef will connect soon.');
+        e.target.reset();
+    });
+    
+    // Smooth Scroll
+    document.querySelectorAll('.nav-container a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if(target) target.scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+    
+    loadProjects();
+    loadSkills();
+    loadTimeline();
+    
+    // 3D Hero Effect
+    const scene = new THREE.Scene();
+    const camera3d = new THREE.PerspectiveCamera(75, 500/500, 0.1, 1000);
+    const renderer3d = new THREE.WebGLRenderer({ alpha: true });
+    renderer3d.setSize(500, 500);
+    document.getElementById('hero3d').appendChild(renderer3d.domElement);
+    const geometry = new THREE.IcosahedronGeometry(1, 0);
+    const material = new THREE.MeshBasicMaterial({ color: 0x00f2ff, wireframe: true });
+    const icosahedron = new THREE.Mesh(geometry, material);
+    scene.add(icosahedron);
+    const particlesGeo = new THREE.BufferGeometry();
+    const particlesCount = 500;
+    const posArray = new Float32Array(particlesCount * 3);
+    for(let i = 0; i < particlesCount; i++) {
+        posArray[i*3] = (Math.random() - 0.5) * 10;
+        posArray[i*3+1] = (Math.random() - 0.5) * 10;
+        posArray[i*3+2] = (Math.random() - 0.5) * 10;
+    }
+    particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    const particlesMat = new THREE.PointsMaterial({ color: 0xff00ff, size: 0.05 });
+    const particlesMesh = new THREE.Points(particlesGeo, particlesMat);
+    scene.add(particlesMesh);
+    camera3d.position.z = 3;
+    function animate3d() {
+        requestAnimationFrame(animate3d);
+        icosahedron.rotation.x += 0.01;
+        icosahedron.rotation.y += 0.02;
+        particlesMesh.rotation.y += 0.005;
+        renderer3d.render(scene, camera3d);
+    }
+    animate3d();
+</script>
+</body>
+</html>
