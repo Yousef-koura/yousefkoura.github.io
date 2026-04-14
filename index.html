@@ -677,13 +677,14 @@
             position: absolute;
             bottom: 80px;
             right: 0;
-            width: 360px;
+            width: 380px;
             background: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(20px);
             border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.3);
             display: none;
             overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
 
         .chat-window.active {
@@ -709,9 +710,20 @@
             font-size: 0.7rem;
             color: #ffffff;
         }
+        
+        .close-chat {
+            cursor: pointer;
+            font-size: 1.2rem;
+            opacity: 0.7;
+            transition: 0.2s;
+        }
+        
+        .close-chat:hover {
+            opacity: 1;
+        }
 
         .chat-messages {
-            height: 350px;
+            height: 300px;
             overflow-y: auto;
             padding: 1rem;
         }
@@ -736,15 +748,27 @@
             text-align: left;
         }
 
-        .typing-indicator {
-            color: #888;
-            font-style: italic;
-            animation: blinkText 1s infinite;
+        .suggestions-container {
+            padding: 0.8rem 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
-
-        @keyframes blinkText {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        
+        .suggestion-chip {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .suggestion-chip:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
         }
 
         .chat-input {
@@ -782,7 +806,7 @@
             .nav-ai { width: 90%; padding: 0.5rem; }
             .nav-container { gap: 1rem; flex-wrap: wrap; justify-content: center; }
             .section-title { font-size: 2rem; }
-            .chat-window { width: 300px; right: -50px; }
+            .chat-window { width: 320px; right: -20px; }
             .contact-creative { grid-template-columns: 1fr; gap: 1rem; }
         }
     </style>
@@ -895,7 +919,7 @@
         </div>
     </section>
 
-    <!-- PROJECTS SECTION - UPDATED WITH GITHUB LINKS -->
+    <!-- PROJECTS SECTION -->
     <section id="projects">
         <div class="container">
             <h2 class="section-title">◉ INTELLIGENCE PROJECTS ◉</h2>
@@ -903,7 +927,7 @@
         </div>
     </section>
 
-    <!-- PUBLICATION SECTION - CLICK TO DOWNLOAD PAPER FROM HOSTED PDF -->
+    <!-- PUBLICATION SECTION -->
     <section id="publication">
         <div class="container">
             <h2 class="section-title">📄 PUBLICATION</h2>
@@ -961,15 +985,26 @@
     </section>
 </div>
 
-<div class="ai-chat">
+<!-- CHATBOT with SUGGESTIONS and CLOSE ON OUTSIDE CLICK -->
+<div class="ai-chat" id="chatContainer">
     <div class="chat-toggle" id="chatToggle"><i class="fas fa-robot" style="font-size: 1.5rem;"></i></div>
     <div class="chat-window" id="chatWindow">
         <div class="chat-header">
             <span><i class="fas fa-brain"></i> YK Assistant</span>
-            <span class="chat-status">● Online</span>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <span class="chat-status">● Online</span>
+                <span class="close-chat" id="closeChatBtn">&times;</span>
+            </div>
         </div>
         <div class="chat-messages" id="chatMessages">
             <div class="chat-message bot-message">🤖: Hello! I'm YK Assistant. Ask me about Yousef's projects, skills, or experience!</div>
+        </div>
+        <div class="suggestions-container" id="suggestionsContainer">
+            <div class="suggestion-chip" data-question="What projects has Yousef built?">📁 Projects</div>
+            <div class="suggestion-chip" data-question="What are his technical skills?">⚙️ Skills</div>
+            <div class="suggestion-chip" data-question="Tell me about his education">🎓 Education</div>
+            <div class="suggestion-chip" data-question="What is the Agri-Bot accuracy?">🌾 Agri-Bot Accuracy</div>
+            <div class="suggestion-chip" data-question="Does he have any publications?">📄 Publications</div>
         </div>
         <div class="chat-input">
             <input type="text" id="chatInput" placeholder="Ask me anything...">
@@ -980,14 +1015,15 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-    // [All data and core functionality remain exactly the same]
+    // ========== PROJECTS DATA (INCLUDING SQL PROJECTS) ==========
     const projectsData = [
         { icon: "fas fa-seedling", title: "AGRI-BOT", desc: "Autonomous crop disease detection • 96% accuracy • 20 FPS on Jetson Nano", tech: ["YOLOv8", "MobileNetV2", "Edge AI"], link: "https://github.com/Yousef-koura/AGRI-BOT" },
         { icon: "fas fa-futbol", title: "BALL TRACKING ROBOT", desc: "95% detection accuracy • sub-5cm tracking error • real-time visual servoing", tech: ["OpenCV", "PID Control", "Robotics"], link: "https://github.com/Yousef-koura/Ball-Tracking-Robot" },
         { icon: "fas fa-shield-alt", title: "STEGANOGRAPHY DETECTOR", desc: "Hidden data detection using CNN • 90% classification accuracy", tech: ["CNN", "Deep Learning", "Image Forensics"], link: "https://github.com/Yousef-koura/Steganography-Detector" },
         { icon: "fas fa-ribbon", title: "BREAST CANCER AI", desc: "95% accuracy • 3rd place challenge winner • early detection model", tech: ["Scikit-learn", "ML Models", "Classification"], link: "https://github.com/Yousef-koura/Breast-Cancer-Ai" },
         { icon: "fas fa-brain", title: "MACHINE LEARNING PROJECTS", desc: "8+ ML projects • regression, classification, clustering • comprehensive ML portfolio", tech: ["Python", "Pandas", "Scikit-learn", "Matplotlib"], link: "https://github.com/Yousef-koura/Machine-Learning-Projects" },
-        { icon: "fas fa-microchip", title: "DEEP LEARNING PROJECTS", desc: "Advanced neural networks • CNNs, RNNs, transformers • expanding deep learning archive", tech: ["TensorFlow", "Keras", "PyTorch", "Transformers"], link: "https://github.com/Yousef-koura/Deep_Learning_Projects" }
+        { icon: "fas fa-microchip", title: "DEEP LEARNING PROJECTS", desc: "Advanced neural networks • CNNs, RNNs, transformers • expanding deep learning archive", tech: ["TensorFlow", "Keras", "PyTorch", "Transformers"], link: "https://github.com/Yousef-koura/Deep_Learning_Projects" },
+        { icon: "fas fa-database", title: "SQL PROJECTS", desc: "Data analysis & management • complex queries • database design & optimization", tech: ["SQL", "PostgreSQL", "MySQL", "Query Optimization"], link: "https://github.com/Yousef-koura/SQL_Projects" }
     ];
     
     function loadProjects() {
@@ -1011,7 +1047,7 @@
     }
     
     const skillsData = [
-        { title: "PROGRAMMING LANGUAGES", items: ["Python", "C++", "MATLAB"] },
+        { title: "PROGRAMMING LANGUAGES", items: ["Python", "C++", "MATLAB","SQL"] },
         { title: "AI & DEEP LEARNING", items: ["Supervised Learning", "Unsupervised Learning", "Neural Networks","CNN","YOLOs", "Transfer Learning" ,"NumPy", "Pandas", "Seaborn", "Matplotlib", "Scikit-learn", "TensorFlow"] },
         { title: "MLOps", items: ["Docker", "Kubernetes", "FastAPI", "Git", "GitHub"] }
     ];
@@ -1048,7 +1084,7 @@
     }
     
     setTimeout(() => {
-        animateCounter(document.getElementById('projectsCount'), 22);
+        animateCounter(document.getElementById('projectsCount'), 25);
         animateCounter(document.getElementById('certCount'), 8);
         animateCounter(document.getElementById('pubCount'), 1);
     }, 500);
@@ -1066,7 +1102,7 @@
         });
     }
     
-    // Custom Cursor, dynamic roles, quotes, smooth scroll, chatbot, 3D, background particles (unchanged logic)
+    // Custom Cursor
     const cursor = document.querySelector('.cursor');
     const cursorDot = document.querySelector('.cursor-dot');
     document.addEventListener('mousemove', (e) => {
@@ -1076,6 +1112,7 @@
         cursorDot.style.top = e.clientY + 'px';
     });
     
+    // Dynamic Roles & Quotes
     const roles = ["MACHINE LEARNING", "DEEP LEARNING", "RESEARCHER", "MECHATRONICS ENGINEER"];
     let roleIdx = 0;
     const roleElement = document.getElementById('dynamicRole');
@@ -1109,14 +1146,15 @@
         });
     });
     
+    // ========== CHATBOT WITH SUGGESTIONS & CLOSE ON OUTSIDE CLICK ==========
     class SmartChatbot {
         constructor() {
             this.knowledgeBase = {
                 name: "Yousef Koura",
                 role: "AI Engineer & Mechatronics Specialist",
-                education: "B.Sc. Mechatronics Systems Engineering from MSA University, GPA 3.62",
-                projects: ["Agri-Bot (96%)", "Ball Tracking Robot (95%)", "Steganography Detector (90%)", "Breast Cancer AI (95%)", "ML Projects (8+)", "Deep Learning Projects"],
-                skills: ["Python", "C++", "MATLAB", "TensorFlow", "YOLOv8", "Docker", "Kubernetes", "FastAPI"],
+                education: "B.Sc. Mechatronics Systems Engineering from MSA University, GPA 3.62 (supervised by University of Greenwich, UK)",
+                projects: ["Agri-Bot (96%)", "Ball Tracking Robot (95%)", "Steganography Detector (90%)", "Breast Cancer AI (95%)", "ML Projects (8+)", "Deep Learning Projects", "SQL Projects (Database & Analytics)"],
+                skills: ["Python", "C++", "MATLAB", "SQL", "TensorFlow", "YOLOv8", "Docker", "Kubernetes", "FastAPI", "Pandas", "NumPy", "Scikit-learn"],
                 publication: "Agri-Bot: AI-Powered Crop Disease Detection at IUGRC 2024 - click publication section to download PDF",
                 certifications: 8
             };
@@ -1124,24 +1162,53 @@
         
         async processMessage(message) {
             const msg = message.toLowerCase();
-            if (msg.includes('project')) return `Yousef has 6 major AI repositories: ${this.knowledgeBase.projects.join(", ")}. All available on GitHub: https://github.com/Yousef-koura`;
-            if (msg.includes('skill')) return `Yousef specializes in: ${this.knowledgeBase.skills.join(", ")}.`;
-            if (msg.includes('accuracy')) return `Highest accuracy is 96% with Agri-Bot. Other projects: Ball Tracking (95%), Breast Cancer (95%).`;
-            if (msg.includes('education') || msg.includes('study')) return `🎓 ${this.knowledgeBase.education}`;
-            if (msg.includes('publication')) return `📄 ${this.knowledgeBase.publication}`;
-            if (msg.includes('experience')) return `Yousef interned at PioPetro (2024), ITI (2023), and Digital HUB (2023), winning 3rd place for Breast Cancer Detection.`;
-            return "Ask me about Yousef's projects (Agri-Bot, Ball Tracking, ML projects), skills, accuracy, education, publication, or experience!";
+            if (msg.includes('project') || msg.includes('repository')) 
+                return `✨ Yousef has 7 major repositories: ${this.knowledgeBase.projects.join(", ")}. All available on GitHub: https://github.com/Yousef-koura`;
+            if (msg.includes('skill') || msg.includes('technolog')) 
+                return `💻 Technical arsenal: ${this.knowledgeBase.skills.join(", ")}.`;
+            if (msg.includes('accuracy')) 
+                return `🎯 Highest accuracy is 96% with Agri-Bot. Other benchmarks: Ball Tracking (95%), Breast Cancer (95%), Steganography Detector (90%).`;
+            if (msg.includes('education') || msg.includes('study') || msg.includes('university')) 
+                return `🎓 ${this.knowledgeBase.education}`;
+            if (msg.includes('publication') || msg.includes('paper') || msg.includes('research')) 
+                return `📄 ${this.knowledgeBase.publication}`;
+            if (msg.includes('experience') || msg.includes('intern')) 
+                return `💼 Yousef interned at PioPetro (2024 - ML Engineer), ITI (2023 - AI/ML), and Digital HUB (2023 - Breast Cancer Detection 3rd place).`;
+            return "🤖 Ask me about his projects (Agri-Bot, SQL, ML), skills, accuracy metrics, education, publication, or internship experience!";
         }
     }
     
     const chatbot = new SmartChatbot();
+    const chatContainer = document.getElementById('chatContainer');
     const chatToggle = document.getElementById('chatToggle');
     const chatWindow = document.getElementById('chatWindow');
     const chatInput = document.getElementById('chatInput');
     const sendChat = document.getElementById('sendChat');
     const chatMessages = document.getElementById('chatMessages');
+    const closeChatBtn = document.getElementById('closeChatBtn');
     
-    chatToggle.addEventListener('click', () => chatWindow.classList.toggle('active'));
+    // Toggle chat window
+    chatToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        chatWindow.classList.toggle('active');
+    });
+    
+    // Close button
+    closeChatBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        chatWindow.classList.remove('active');
+    });
+    
+    // Close when clicking outside the chat window
+    document.addEventListener('click', function(event) {
+        const isClickInsideChat = chatContainer.contains(event.target);
+        if (!isClickInsideChat && chatWindow.classList.contains('active')) {
+            chatWindow.classList.remove('active');
+        }
+    });
+    
+    // Prevent closing when clicking inside chat window (bubbling handled)
+    chatWindow.addEventListener('click', (e) => e.stopPropagation());
     
     function addMessage(text, isUser = false) {
         const div = document.createElement('div');
@@ -1151,10 +1218,10 @@
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
     
-    async function sendMessage() {
-        const msg = chatInput.value.trim();
+    async function sendMessage(messageText = null) {
+        const msg = messageText || chatInput.value.trim();
         if (!msg) return;
-        addMessage(msg, true);
+        if (!messageText) addMessage(msg, true);
         chatInput.value = '';
         addMessage("🔍 Let me check...");
         setTimeout(async () => {
@@ -1165,10 +1232,20 @@
         }, 500);
     }
     
-    sendChat.addEventListener('click', sendMessage);
+    sendChat.addEventListener('click', () => sendMessage());
     chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
     
-    // 3D Scene (monochrome)
+    // Suggestion chips functionality
+    document.querySelectorAll('.suggestion-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            const question = chip.getAttribute('data-question');
+            if (question) {
+                sendMessage(question);
+            }
+        });
+    });
+    
+    // 3D Scene
     const scene = new THREE.Scene();
     const camera3d = new THREE.PerspectiveCamera(75, 500/500, 0.1, 1000);
     const renderer3d = new THREE.WebGLRenderer({ alpha: true });
@@ -1200,7 +1277,7 @@
     }
     animate3d();
     
-    // Background particle animation (monochrome)
+    // Background particles
     const canvasBg = document.getElementById('particleCanvas');
     const ctxBg = canvasBg.getContext('2d');
     let width = window.innerWidth, height = window.innerHeight;
