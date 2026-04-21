@@ -318,6 +318,37 @@
             box-shadow: 0 15px 35px rgba(255, 255, 255, 0.15);
         }
 
+        .project-img-container {
+            height: 200px;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .project-img-container i {
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.7);
+            transition: transform 0.3s ease;
+        }
+
+        .project-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .project-ai-card:hover .project-img-container img {
+            transform: scale(1.05);
+        }
+
+        .project-ai-card:hover .project-img-container i {
+            transform: scale(1.1);
+        }
+
         .project-header {
             background: linear-gradient(135deg, #ffffff10, #aaaaaa10);
             padding: 1.5rem;
@@ -808,6 +839,7 @@
             .section-title { font-size: 2rem; }
             .chat-window { width: 320px; right: -20px; }
             .contact-creative { grid-template-columns: 1fr; gap: 1rem; }
+            .project-img-container { height: 160px; }
         }
     </style>
 </head>
@@ -902,7 +934,7 @@
     <!-- SKILLS SECTION -->
     <section id="skills">
         <div class="container">
-            <h2 class="section-title">◈ AI SKILLS ◈</h2>
+            <h2 class="section-title">◈ SKILLS ◈</h2>
             <div class="skills-wrapper">
                 <div class="project-showcase" id="skillsGrid"></div>
                 
@@ -1015,26 +1047,31 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-    // ========== PROJECTS DATA (INCLUDING SQL PROJECTS) ==========
+    // ========== PROJECTS DATA (8 PROJECTS WITH IMAGES FOR FIRST 5) ==========
     const projectsData = [
-        { icon: "fas fa-seedling", title: "AGRI-BOT", desc: "Autonomous crop disease detection • 96% accuracy • 20 FPS on Jetson Nano", tech: ["YOLOv8", "MobileNetV2", "Edge AI"], link: "https://github.com/Yousef-koura/AGRI-BOT" },
-        { icon: "fas fa-futbol", title: "BALL TRACKING ROBOT", desc: "95% detection accuracy • sub-5cm tracking error • real-time visual servoing", tech: ["OpenCV", "PID Control", "Robotics"], link: "https://github.com/Yousef-koura/Ball-Tracking-Robot" },
-        { icon: "fas fa-shield-alt", title: "STEGANOGRAPHY DETECTOR", desc: "Hidden data detection using CNN • 90% classification accuracy", tech: ["CNN", "Deep Learning", "Image Forensics"], link: "https://github.com/Yousef-koura/Steganography-Detector" },
-        { icon: "fas fa-ribbon", title: "BREAST CANCER AI", desc: "95% accuracy • 3rd place challenge winner • early detection model", tech: ["Scikit-learn", "ML Models", "Classification"], link: "https://github.com/Yousef-koura/Breast-Cancer-Ai" },
-        { icon: "fas fa-brain", title: "MACHINE LEARNING PROJECTS", desc: "8+ ML projects • regression, classification, clustering • comprehensive ML portfolio", tech: ["Python", "Pandas", "Scikit-learn", "Matplotlib"], link: "https://github.com/Yousef-koura/Machine-Learning-Projects" },
-        { icon: "fas fa-microchip", title: "DEEP LEARNING PROJECTS", desc: "Advanced neural networks • CNNs, RNNs, transformers • expanding deep learning archive", tech: ["TensorFlow", "Keras", "PyTorch", "Transformers"], link: "https://github.com/Yousef-koura/Deep_Learning_Projects" },
-        { icon: "fas fa-database", title: "SQL PROJECTS", desc: "Data analysis & management • complex queries • database design & optimization", tech: ["SQL", "PostgreSQL", "MySQL", "Query Optimization"], link: "https://github.com/Yousef-koura/SQL_Projects" }
+        { icon: "fas fa-seedling", title: "AGRI-BOT", desc: "Autonomous crop disease detection • 96% accuracy • 20 FPS on Jetson Nano", tech: ["YOLOv8", "MobileNetV2", "Edge AI"], link: "https://github.com/Yousef-koura/AGRI-BOT", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/IMG_E9824.jpg" },
+        { icon: "fas fa-chart-line", title: "FMCG DATA ENGINEERING PIPELINE", desc: "Databricks live dashboard & ETL pipeline • Real-time analytics for FMCG industry", tech: ["Databricks", "PySpark", "Delta Lake", "Live Dashboard"], link: "https://github.com/Yousef-koura/FMCG_Data_Engineer_Project", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/FMCG%20dashboard.png" },
+        { icon: "fas fa-futbol", title: "BALL TRACKING ROBOT", desc: "95% detection accuracy • sub-5cm tracking error • real-time visual servoing", tech: ["OpenCV", "PID Control", "Robotics"], link: "https://github.com/Yousef-koura/Ball-Tracking-Robot", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/ball%20tracking%20robot.png" },
+        { icon: "fas fa-shield-alt", title: "STEGANOGRAPHY DETECTOR", desc: "Hidden data detection using CNN • 90% classification accuracy", tech: ["CNN", "Deep Learning", "Image Forensics"], link: "https://github.com/Yousef-koura/Steganography-Detector", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/stegno%20project.jpg" },
+        { icon: "fas fa-ribbon", title: "BREAST CANCER AI", desc: "95% accuracy • 3rd place challenge winner • early detection model", tech: ["Scikit-learn", "ML Models", "Classification"], link: "https://github.com/Yousef-koura/Breast-Cancer-Ai", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/breast%20cancer.jpg" },
+        { icon: "fas fa-brain", title: "MACHINE LEARNING PROJECTS", desc: "8+ ML projects • regression, classification, clustering • comprehensive ML portfolio", tech: ["Python", "Pandas", "Scikit-learn", "Matplotlib"], link: "https://github.com/Yousef-koura/Machine-Learning-Projects", image: null },
+        { icon: "fas fa-microchip", title: "DEEP LEARNING PROJECTS", desc: "Advanced neural networks • CNNs, RNNs, transformers • expanding deep learning archive", tech: ["TensorFlow", "Keras", "PyTorch", "Transformers"], link: "https://github.com/Yousef-koura/Deep_Learning_Projects", image: null },
+        { icon: "fas fa-database", title: "SQL PROJECTS", desc: "Data analysis & management • complex queries • database design & optimization", tech: ["SQL", "PostgreSQL", "MySQL", "Query Optimization"], link: "https://github.com/Yousef-koura/SQL_Projects", image: null }
     ];
     
     function loadProjects() {
         document.getElementById('projectsGrid').innerHTML = projectsData.map(proj => `
             <a href="${proj.link}" target="_blank" class="project-ai-card" style="text-decoration: none; color: inherit;">
-                <div class="project-header">
-                    <div class="project-icon"><i class="${proj.icon}"></i></div>
-                    <h3>${proj.title}</h3>
+                <div class="project-img-container">
+                    ${proj.image ? 
+                        `<img src="${proj.image}" alt="${proj.title}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : 
+                        ''
+                    }
+                    ${!proj.image ? `<i class="${proj.icon}"></i>` : `<i class="${proj.icon}" style="display: none;"></i>`}
                 </div>
                 <div style="padding: 1.5rem;">
-                    <p style="color: #aaa; margin-bottom: 1rem;">${proj.desc}</p>
+                    <h3>${proj.title}</h3>
+                    <p style="color: #aaa; margin: 0.5rem 0 1rem;">${proj.desc}</p>
                     <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                         ${proj.tech.map(t => `<span style="background:rgba(255,255,255,0.15); padding:0.2rem 0.8rem; border-radius:20px; font-size:0.7rem; color:#ddd;">${t}</span>`).join('')}
                     </div>
@@ -1044,12 +1081,23 @@
                 </div>
             </a>
         `).join('');
+        
+        // Fix for images that might fail to load - show icon as fallback
+        document.querySelectorAll('.project-img-container img').forEach(img => {
+            img.addEventListener('error', function() {
+                this.style.display = 'none';
+                const icon = this.nextElementSibling;
+                if (icon) icon.style.display = 'flex';
+            });
+        });
     }
     
+    // Updated skillsData with new Data Engineer section
     const skillsData = [
         { title: "PROGRAMMING LANGUAGES", items: ["Python", "C++", "MATLAB","SQL"] },
         { title: "AI & DEEP LEARNING", items: ["Supervised Learning", "Unsupervised Learning", "Neural Networks","CNN","YOLOs", "Transfer Learning" ,"NumPy", "Pandas", "Seaborn", "Matplotlib", "Scikit-learn", "TensorFlow"] },
-        { title: "MLOps", items: ["Docker", "Kubernetes", "FastAPI", "Git", "GitHub"] }
+        { title: "MLOps", items: ["Docker", "Kubernetes", "FastAPI", "Git", "GitHub"] },
+        { title: "DATA ENGINEER", items: ["ETL/ELT", "Medallion Architecture", "Delta Lake", "PySpark", "Databricks", "Star Schema"] }
     ];
     
     const timelineData = [
@@ -1084,7 +1132,7 @@
     }
     
     setTimeout(() => {
-        animateCounter(document.getElementById('projectsCount'), 25);
+        animateCounter(document.getElementById('projectsCount'), 26);
         animateCounter(document.getElementById('certCount'), 8);
         animateCounter(document.getElementById('pubCount'), 1);
     }, 500);
@@ -1113,7 +1161,7 @@
     });
     
     // Dynamic Roles & Quotes
-    const roles = ["MACHINE LEARNING", "DEEP LEARNING", "RESEARCHER", "MECHATRONICS ENGINEER"];
+    const roles = ["MACHINE LEARNING", "DEEP LEARNING", "RESEARCHER", "MECHATRONICS ENGINEER", "DATA ENGINEER"];
     let roleIdx = 0;
     const roleElement = document.getElementById('dynamicRole');
     setInterval(() => {
@@ -1146,24 +1194,23 @@
         });
     });
     
-    // ========== CHATBOT WITH SUGGESTIONS & CLOSE ON OUTSIDE CLICK ==========
+    // ========== CHATBOT ==========
     class SmartChatbot {
         constructor() {
             this.knowledgeBase = {
                 name: "Yousef Koura",
                 role: "AI Engineer & Mechatronics Specialist",
                 education: "B.Sc. Mechatronics Systems Engineering from MSA University, GPA 3.62 (supervised by University of Greenwich, UK)",
-                projects: ["Agri-Bot (96%)", "Ball Tracking Robot (95%)", "Steganography Detector (90%)", "Breast Cancer AI (95%)", "ML Projects (8+)", "Deep Learning Projects", "SQL Projects (Database & Analytics)"],
-                skills: ["Python", "C++", "MATLAB", "SQL", "TensorFlow", "YOLOv8", "Docker", "Kubernetes", "FastAPI", "Pandas", "NumPy", "Scikit-learn"],
-                publication: "Agri-Bot: AI-Powered Crop Disease Detection at IUGRC 2024 - click publication section to download PDF",
-                certifications: 8
+                projects: ["Agri-Bot (96%)", "FMCG Data Engineering Pipeline", "Ball Tracking Robot (95%)", "Steganography Detector (90%)", "Breast Cancer AI (95%)", "ML Projects (8+)", "Deep Learning Projects", "SQL Projects"],
+                skills: ["Python", "C++", "MATLAB", "SQL", "TensorFlow", "YOLOv8", "Docker", "Kubernetes", "FastAPI", "Pandas", "NumPy", "Scikit-learn", "Databricks", "PySpark", "ETL/ELT", "Delta Lake", "Medallion Architecture"],
+                publication: "Agri-Bot: AI-Powered Crop Disease Detection at IUGRC 2024 - click publication section to download PDF"
             };
         }
         
         async processMessage(message) {
             const msg = message.toLowerCase();
             if (msg.includes('project') || msg.includes('repository')) 
-                return `✨ Yousef has 7 major repositories: ${this.knowledgeBase.projects.join(", ")}. All available on GitHub: https://github.com/Yousef-koura`;
+                return `✨ Yousef has 8 major repositories: ${this.knowledgeBase.projects.join(", ")}. All available on GitHub: https://github.com/Yousef-koura`;
             if (msg.includes('skill') || msg.includes('technolog')) 
                 return `💻 Technical arsenal: ${this.knowledgeBase.skills.join(", ")}.`;
             if (msg.includes('accuracy')) 
@@ -1174,7 +1221,9 @@
                 return `📄 ${this.knowledgeBase.publication}`;
             if (msg.includes('experience') || msg.includes('intern')) 
                 return `💼 Yousef interned at PioPetro (2024 - ML Engineer), ITI (2023 - AI/ML), and Digital HUB (2023 - Breast Cancer Detection 3rd place).`;
-            return "🤖 Ask me about his projects (Agri-Bot, SQL, ML), skills, accuracy metrics, education, publication, or internship experience!";
+            if (msg.includes('fmcg') || msg.includes('databricks') || msg.includes('data engineering')) 
+                return `📊 FMCG Data Engineering Pipeline: Built on Databricks with live dashboard, PySpark ETL, Delta Lake for real-time FMCG analytics. Link: https://github.com/Yousef-koura/FMCG_Data_Engineer_Project`;
+            return "🤖 Ask me about his projects (Agri-Bot, FMCG Pipeline, SQL, ML), skills, accuracy metrics, education, publication, or internship experience!";
         }
     }
     
@@ -1187,27 +1236,9 @@
     const chatMessages = document.getElementById('chatMessages');
     const closeChatBtn = document.getElementById('closeChatBtn');
     
-    // Toggle chat window
-    chatToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        chatWindow.classList.toggle('active');
-    });
-    
-    // Close button
-    closeChatBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        chatWindow.classList.remove('active');
-    });
-    
-    // Close when clicking outside the chat window
-    document.addEventListener('click', function(event) {
-        const isClickInsideChat = chatContainer.contains(event.target);
-        if (!isClickInsideChat && chatWindow.classList.contains('active')) {
-            chatWindow.classList.remove('active');
-        }
-    });
-    
-    // Prevent closing when clicking inside chat window (bubbling handled)
+    chatToggle.addEventListener('click', (e) => { e.stopPropagation(); chatWindow.classList.toggle('active'); });
+    closeChatBtn.addEventListener('click', (e) => { e.stopPropagation(); chatWindow.classList.remove('active'); });
+    document.addEventListener('click', (event) => { if(!chatContainer.contains(event.target) && chatWindow.classList.contains('active')) chatWindow.classList.remove('active'); });
     chatWindow.addEventListener('click', (e) => e.stopPropagation());
     
     function addMessage(text, isUser = false) {
@@ -1235,14 +1266,8 @@
     sendChat.addEventListener('click', () => sendMessage());
     chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
     
-    // Suggestion chips functionality
     document.querySelectorAll('.suggestion-chip').forEach(chip => {
-        chip.addEventListener('click', () => {
-            const question = chip.getAttribute('data-question');
-            if (question) {
-                sendMessage(question);
-            }
-        });
+        chip.addEventListener('click', () => { const question = chip.getAttribute('data-question'); if (question) sendMessage(question); });
     });
     
     // 3D Scene
