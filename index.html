@@ -377,6 +377,90 @@
         
         .edu-university { color: #aaa; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
         
+        /* Lightbox CSS */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 10000;
+            opacity: 0;
+            pointer-events: none;
+            backdrop-filter: blur(8px);
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .lightbox-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .lightbox-img {
+            max-width: 85vw;
+            max-height: 85vh;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 212, 170, 0.3);
+            object-fit: contain;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+        .lightbox-close {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: transparent;
+            border: 2px solid #00d4aa;
+            color: #00d4aa;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            z-index: 10001;
+        }
+        .lightbox-close:hover {
+            background: rgba(0, 212, 170, 0.2);
+            transform: scale(1.05);
+        }
+        .lightbox-caption {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #8b9ab0;
+            font-size: 0.9rem;
+            background: rgba(0,0,0,0.6);
+            padding: 0.5rem 1rem;
+            width: fit-content;
+            margin: 0 auto;
+            border-radius: 40px;
+            backdrop-filter: blur(4px);
+            z-index: 10001;
+        }
+        .timeline-node.has-cert {
+            cursor: pointer;
+        }
+        .timeline-node .cert-hint {
+            font-size: 0.75rem;
+            color: rgba(0, 212, 170, 0.6);
+            margin-top: 0.6rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: color 0.2s;
+        }
+        .timeline-node.has-cert:hover .cert-hint {
+            color: #00d4aa;
+        }
+        
         @media (max-width: 1024px) { #projectsGrid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 640px) { #projectsGrid { grid-template-columns: 1fr; } .featured-card { grid-template-columns: 1fr; } .featured-img { min-height: 180px; } }
         
@@ -518,7 +602,7 @@
 
     <section id="projects"><div class="container"><h2 class="section-title">Intelligence Projects</h2><p style="text-align:center; color:#8b9ab0; margin-top:-2rem; margin-bottom:2rem; font-size:0.9rem;">Showing 10 highlighted projects · 30+ total built</p><div id="featuredProject"></div><div id="projectsGrid"></div></div></section>
 
-    <section id="publication" style="padding: 3rem 0; margin-top: -2rem;"><div class="container"><h2 class="section-title">Publication</h2><div class="edu-card publication-clickable" id="publicationCard" style="max-width: 800px; margin: 0 auto; text-align: center;"><div class="edu-header" style="justify-content: center;"><div class="edu-icon"><i class="fas fa-file-pdf"></i></div><div class="edu-title"><h3>International Research Conference</h3><div class="edu-date">IUGRC 8 - 2024</div></div></div><div class="edu-body"><div class="edu-degree">Agri-Bot: AI-Powered Crop Disease Detection and Medication Recommendation Robot</div><div class="edu-university" style="justify-content: center;"><i class="fas fa-download"></i><span>Click to download full research paper (PDF)</span></div></div></div></div></section>
+    <section id="publication" style="padding: 3rem 0; margin-top: -2rem;"><div class="container"><h2 class="section-title">Publication</h2><div class="edu-card publication-clickable" id="publicationCard" style="max-width: 800px; margin: 0 auto; text-align: center;"><div class="edu-header" style="justify-content: center;"><div class="edu-icon"><i class="fas fa-file-pdf"></i></div><div class="edu-title"><h3>International Research Conference</h3><div class="edu-date">IUGRC 8 - 2024</div></div></div><div class="edu-body"><div class="edu-degree">Agri-Bot: AI-Powered Crop Disease Detection and Medication Recommendation Robot</div><div class="edu-university" style="justify-content: center;"><i class="fas fa-download"></i><span>Click to download full research paper (PDF)</span></div><!-- Publication certificate button added via JS later --></div></div></div></section>
 
     <section id="contact"><div class="container"><h2 class="section-title">Connect With Me</h2><div class="contact-creative"><a href="mailto:yousefahmed.ae20@gmail.com" class="hologram-card"><div class="hologram-icon"><i class="fas fa-envelope"></i></div><h3>Email</h3><div class="value">yousefahmed.ae20@gmail.com</div></a><a href="https://github.com/Yousef-koura" target="_blank" class="hologram-card"><div class="hologram-icon"><i class="fab fa-github"></i></div><h3>GitHub</h3><div class="value">github.com/Yousef-koura</div></a><a href="https://www.linkedin.com/in/yousefkoura" target="_blank" class="hologram-card"><div class="hologram-icon"><i class="fab fa-linkedin-in"></i></div><h3>LinkedIn</h3><div class="value">linkedin.com/in/yousefkoura</div></a></div></div></section>
 </div>
@@ -539,11 +623,71 @@
 
 <button id="backToTop" aria-label="Back to top">↑</button>
 
+<!-- Lightbox HTML -->
+<div id="lightbox" class="lightbox-overlay">
+    <button id="lightboxClose" class="lightbox-close">✕</button>
+    <img id="lightboxImg" class="lightbox-img" alt="Certificate preview">
+    <div id="lightboxCaption" class="lightbox-caption"></div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-    // ========== 10 PROJECTS (1 Featured + 9 Grid) ==========
+    // ========== LIGHTBOX JS ==========
+    const lightboxOverlay = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+    const lightboxCloseBtn = document.getElementById('lightboxClose');
+    
+    function openLightbox(src, caption) {
+        if (!lightboxOverlay || !lightboxImg) return;
+        lightboxImg.src = src;
+        lightboxCaption.textContent = caption || '';
+        lightboxOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeLightbox() {
+        if (!lightboxOverlay) return;
+        lightboxOverlay.classList.remove('active');
+        lightboxImg.src = '';
+        lightboxCaption.textContent = '';
+        document.body.style.overflow = '';
+    }
+    
+    if (lightboxCloseBtn) lightboxCloseBtn.addEventListener('click', closeLightbox);
+    if (lightboxOverlay) lightboxOverlay.addEventListener('click', (e) => { if(e.target === lightboxOverlay) closeLightbox(); });
+    document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeLightbox(); });
+    
+    // ========== UPDATED TIMELINE DATA WITH CERTIFICATES ==========
+    const timelineData = [
+        { date: "Jun 2024 - Aug 2024", title: "Machine Learning Engineer", org: "PioPetro", desc: "Petroleum AI applications • Virtual training program", cert: { src: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/piopetro.png", caption: "PioPetro — ML Engineer Certificate · 2024" } },
+        { date: "Jul 2023 - Sep 2023", title: "AI/ML Intern", org: "Information Technology Institute (ITI)", desc: "Python, ML models, statistical foundations", cert: { src: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/ITI%20MLAl%20Certificate%20.png", caption: "ITI — AI/ML Internship Certificate · 2023" } },
+        { date: "Aug 2023", title: "AI/ML Intern", org: "Digital HUB (D-HUB)", desc: "Breast Cancer Detection • 3rd Place Winner", cert: { src: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/dhub.png", caption: "D-HUB — AI/ML Internship Certificate · 2023" } }
+    ];
+    
+    // ========== UPDATED loadTimeline FUNCTION WITH CERTIFICATES ==========
+    function loadTimeline() {
+        const container = document.getElementById('timelineGrid');
+        if (!container) return;
+        container.innerHTML = timelineData.map(item => {
+            const hasCert = item.cert && item.cert.src;
+            const certHintHtml = hasCert ? `<div class="cert-hint"><i class="fas fa-certificate"></i> Click to view certificate</div>` : '';
+            const onclickAttr = hasCert ? ` onclick="openLightbox('${item.cert.src.replace(/'/g, "\\'")}', '${item.cert.caption.replace(/'/g, "\\'")}')"` : '';
+            return `<div class="timeline-node reveal ${hasCert ? 'has-cert' : ''}"${onclickAttr}>
+                        <div class="timeline-dot-neural"></div>
+                        <div class="timeline-date">${item.date}</div>
+                        <div class="timeline-title">${item.title}</div>
+                        <div class="timeline-org">${item.org}</div>
+                        <div class="timeline-desc">${item.desc}</div>
+                        ${certHintHtml}
+                    </div>`;
+        }).join('');
+        observeNewReveals();
+    }
+    
+    // ========== FIXED PROJECTS DATA WITH UPDATED AGRI-BOT IMAGE URL ==========
     const projectsData = [
-        { icon: "fas fa-seedling", title: "Agri-Bot", desc: "Autonomous crop disease detection • 96% accuracy • 20 FPS on Jetson Nano", tech: ["YOLOv8", "MobileNetV2", "Edge AI"], link: "https://github.com/Yousef-koura/AGRI-BOT", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/IMG_E9824.jpg" },
+        { icon: "fas fa-seedling", title: "Agri-Bot", desc: "Autonomous crop disease detection • 96% accuracy • 20 FPS on Jetson Nano", tech: ["YOLOv8", "MobileNetV2", "Edge AI"], link: "https://github.com/Yousef-koura/AGRI-BOT", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/Agribot.png" },
         { icon: "fas fa-chart-line", title: "FMCG Data Engineering Pipeline", desc: "Databricks live dashboard & ETL pipeline • Real-time analytics for FMCG industry", tech: ["Databricks", "PySpark", "Delta Lake", "Live Dashboard"], link: "https://github.com/Yousef-koura/FMCG_Data_Engineer_Project", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/FMCG%20dashboard.png" },
         { icon: "fas fa-futbol", title: "Ball Tracking Robot", desc: "95% detection accuracy • sub-5cm tracking error • real-time visual servoing", tech: ["OpenCV", "PID Control", "Robotics"], link: "https://github.com/Yousef-koura/Ball-Tracking-Robot", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/ball%20tracking%20robot.png" },
         { icon: "fas fa-shield-alt", title: "Steganography Detector", desc: "Hidden data detection using CNN • 90% classification accuracy", tech: ["CNN", "Deep Learning", "Image Forensics"], link: "https://github.com/Yousef-koura/Steganography-Detector", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/stegno%20project.jpg" },
@@ -561,11 +705,6 @@
         { title: "Data Engineering", items: ["ETL/ELT", "Medallion Architecture", "Delta Lake", "PySpark", "Databricks", "Star Schema"] },
         { title: "Frameworks", items: ["TensorFlow", "PyTorch", "Scikit-learn", "Pandas", "FastAPI", "OpenCV", "LangChain"] },
         { title: "MLOps", items: ["Git", "Docker", "ONNX Runtime", "AWS (fundamentals)"] }
-    ];
-    const timelineData = [
-        { date: "Jun 2024 - Aug 2024", title: "Machine Learning Engineer", org: "PioPetro", desc: "Petroleum AI applications • Virtual training program" },
-        { date: "Jul 2023 - Sep 2023", title: "AI/ML Intern", org: "Information Technology Institute (ITI)", desc: "Python, ML models, statistical foundations" },
-        { date: "Aug 2023", title: "AI/ML Intern", org: "Digital HUB (D-HUB)", desc: "Breast Cancer Detection • 3rd Place Winner" }
     ];
     const softSkills = ["Problem-solving", "Time management", "Adaptability", "Researcher"];
 
@@ -700,15 +839,29 @@
         observeNewReveals();
     }
 
-    function loadTimeline() {
-        document.getElementById('timelineGrid').innerHTML = timelineData.map(item => `<div class="timeline-node reveal"><div class="timeline-dot-neural"></div><div class="timeline-date">${item.date}</div><div class="timeline-title">${item.title}</div><div class="timeline-org">${item.org}</div><div class="timeline-desc">${item.desc}</div></div>`).join('');
-        observeNewReveals();
-    }
-
     function animateCounter(el, target, suffix='') { let cur=0, step=target/50, intv=setInterval(()=>{ cur+=step; if(cur>=target) { el.textContent=target+suffix; clearInterval(intv); } else el.textContent=Math.floor(cur)+suffix; },20); }
     setTimeout(()=>{ animateCounter(document.getElementById('projectsCount'),30); animateCounter(document.getElementById('certCount'),8); animateCounter(document.getElementById('pubCount'),1); },500);
     document.getElementById('downloadBtn').addEventListener('click',()=> window.open('https://github.com/Yousef-koura/yousefkoura.github.io/raw/main/Yousef_Ahmed_CV.pdf','_blank'));
-    document.getElementById('publicationCard').addEventListener('click',()=> window.open('https://github.com/Yousef-koura/yousefkoura.github.io/raw/main/AgRobot_paper.pdf','_blank'));
+    document.getElementById('publicationCard').addEventListener('click',(e)=> { 
+        // Only open PDF if the click target is NOT the certificate button
+        if(!e.target.closest('.pub-cert-btn')) window.open('https://github.com/Yousef-koura/yousefkoura.github.io/raw/main/AgRobot_paper.pdf','_blank');
+    });
+
+    // Add publication certificate button dynamically after DOM ready
+    function addPubCertificateButton() {
+        const pubBody = document.querySelector('#publicationCard .edu-body');
+        if(pubBody && !document.querySelector('.pub-cert-btn')) {
+            const certDiv = document.createElement('div');
+            certDiv.className = 'pub-cert-btn';
+            certDiv.style.cssText = 'display:inline-flex; align-items:center; gap:0.4rem; margin-top:0.8rem; background:rgba(0,212,170,0.1); border:1px solid rgba(0,212,170,0.3); border-radius:20px; padding:0.3rem 0.9rem; font-size:0.75rem; color:#00d4aa; cursor:pointer; width:fit-content; margin-left:auto; margin-right:auto;';
+            certDiv.innerHTML = '<i class="fas fa-certificate"></i> View Publication Certificate';
+            certDiv.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openLightbox('https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/iugrc.png', 'IUGRC 2024 — Publication Certificate');
+            });
+            pubBody.appendChild(certDiv);
+        }
+    }
 
     // Custom cursor + quotes
     const cursor = document.querySelector('.cursor'), dot = document.querySelector('.cursor-dot');
@@ -769,7 +922,10 @@
         requestAnimationFrame(animateBg);
     }
     animateBg();
-    loadProjects(); loadSkills(); loadTimeline();
+    loadProjects(); 
+    loadSkills(); 
+    loadTimeline();
+    addPubCertificateButton();
 </script>
 </body>
 </html>
