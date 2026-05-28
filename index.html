@@ -54,7 +54,7 @@
             position: fixed;
             pointer-events: none;
             z-index: 9999;
-            transition: 0.15s;
+            transition: 0.15s, opacity 0.2s ease;
             transform: translate(-50%, -50%);
         }
         .cursor-dot {
@@ -65,7 +65,7 @@
             position: fixed;
             pointer-events: none;
             z-index: 9999;
-            transition: 0.05s;
+            transition: 0.05s, opacity 0.2s ease;
             transform: translate(-50%, -50%);
         }
 
@@ -150,6 +150,15 @@
             padding: 0.9rem 2.4rem;
             border: 1px solid rgba(0, 212, 170, 0.3);
             box-shadow: 0 4px 24px rgba(0, 212, 170, 0.08);
+        }
+        .nav-hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: #00d4aa;
+            font-size: 1.4rem;
+            cursor: pointer;
+            padding: 0.2rem 0.5rem;
         }
         .nav-container { display: flex; gap: 2rem; list-style: none; }
         .nav-container a {
@@ -311,6 +320,11 @@
 
         #projectsGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; align-items: stretch; }
         
+        /* Project Filters */
+        .project-filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem; margin-bottom: 1.5rem; }
+        .filter-btn { background: transparent; border: 1px solid rgba(0,212,170,0.3); border-radius: 50px; padding: 0.4rem 1rem; color: #8b9ab0; cursor: pointer; font-size: 0.85rem; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+        .filter-btn:hover, .filter-btn.active { background: rgba(0,212,170,0.15); border-color: #00d4aa; color: #00d4aa; }
+        
         .skill-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.8rem; margin-bottom: 2rem; }
         .skill-tab {
             background: transparent;
@@ -394,6 +408,7 @@
             align-items: center;
             justify-content: center;
             flex-direction: column;
+            cursor: default;
         }
         .lightbox-overlay.active {
             opacity: 1;
@@ -406,6 +421,8 @@
             border: 1px solid rgba(0, 212, 170, 0.3);
             object-fit: contain;
             box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            transition: opacity 0.3s ease;
+            opacity: 1;
         }
         .lightbox-close {
             position: fixed;
@@ -445,6 +462,17 @@
             backdrop-filter: blur(4px);
             z-index: 10001;
         }
+        .lightbox-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(0,212,170,0.2);
+            border-top-color: #00d4aa;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            position: absolute;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
         .timeline-node.has-cert {
             cursor: pointer;
         }
@@ -462,7 +490,15 @@
         }
         
         @media (max-width: 1024px) { #projectsGrid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 640px) { #projectsGrid { grid-template-columns: 1fr; } .featured-card { grid-template-columns: 1fr; } .featured-img { min-height: 180px; } }
+        @media (max-width: 640px) { 
+            #projectsGrid { grid-template-columns: 1fr; } 
+            .featured-card { grid-template-columns: 1fr; } 
+            .featured-img { min-height: 180px; }
+            .nav-hamburger { display: block; }
+            .nav-container { display: none; flex-direction: column; gap: 0.8rem; padding-top: 0.8rem; }
+            .nav-container.open { display: flex; }
+            .nav-ai { border-radius: 20px; padding: 0.8rem 1.5rem; width: 90%; }
+        }
         
         section + section::before { content: ''; display: block; width: 60px; height: 2px; background: linear-gradient(90deg, #00d4aa, #f0a500); margin: 0 auto 4rem auto; border-radius: 2px; }
         section { padding: 5rem 0 5rem 0; position: relative; }
@@ -532,8 +568,6 @@
             .hero-text h1 { font-size: 2.5rem; }
             .hero-3d { display: none; }
             .neural-stats { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-            .nav-ai { width: 90%; padding: 0.6rem 1rem; }
-            .nav-container { gap: 1rem; flex-wrap: wrap; justify-content: center; }
             .section-title { font-size: 1.8rem; }
         }
     </style>
@@ -547,6 +581,7 @@
 <div class="vignette-overlay"></div>
 
 <nav class="nav-ai">
+    <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu">☰</button>
     <ul class="nav-container">
         <li><a href="#home" data-nav>Home</a></li>
         <li><a href="#summary" data-nav>Summary</a></li>
@@ -579,13 +614,13 @@
     </section>
 
     <div class="neural-stats">
-        <div class="stat-neuron" title="30 total projects including coursework, competitions, and research — 10 documented on GitHub"><div class="stat-number" id="projectsCount">0</div><div>Projects</div><small>Built & Deployed</small></div>
-        <div class="stat-neuron" title="Certificates include: TensorFlow Developer, AWS ML Fundamentals, Python for Data Science, Deep Learning Specialization, and more"><div class="stat-number" id="certCount">0</div><div>Certifications</div><small>Earned</small></div>
+        <div class="stat-neuron" title="30 projects: Computer Vision, ML, Data Engineering, NLP — 10 documented on GitHub"><div class="stat-number" id="projectsCount">0</div><div>Projects</div><small>Built & Deployed</small></div>
+        <div class="stat-neuron" title="Certificates: PioPetro ML Engineer, ITI AI/ML Internship, D-HUB Breast Cancer Challenge Winner, plus TensorFlow, AWS, Python certifications"><div class="stat-number" id="certCount">0</div><div>Certifications</div><small>Earned</small></div>
         <div class="stat-neuron"><div class="stat-number" id="pubCount">0</div><div>Publications</div><small>IUGRC 2024</small></div>
         <div class="stat-neuron"><div class="checkmark" id="militaryCheck">✓</div><div>Military Service</div><small>Completed</small></div>
     </div>
 
-    <section id="summary"><div class="container"><h2 class="section-title">Professional Summary</h2><div class="summary-text"><p>Mechatronics Engineering graduate (GPA 3.62) with hands-on experience building AI systems across computer vision, deep learning, and predictive modeling. Skilled in Python, TensorFlow, and YOLO-based object detection, with practical knowledge of MLOps workflows. Published researcher with a proven ability to take AI projects from concept to deployment — including an autonomous agricultural robot achieving 96% accuracy in the field.</p></div></div></section>
+    <section id="summary"><div class="container"><h2 class="section-title">Professional Summary</h2><div class="summary-text"><p>Mechatronics Engineering graduate (GPA 3.62) with 30+ projects spanning computer vision, deep learning, data engineering, and LLMs. Published researcher at IUGRC 2024, 3rd place in a breast cancer AI competition, and builder of production-ready systems including an autonomous agricultural robot achieving 96% accuracy on edge hardware. Skilled in Python, PyTorch, TensorFlow, and MLOps workflows — focused on taking AI from concept to deployment.</p></div></div></section>
 
     <section id="experience"><div class="container"><h2 class="section-title">Experience</h2><div class="timeline-neural" id="timelineGrid"></div><h2 class="section-title" style="margin-top: 3rem;">Education</h2><div class="education-modern"><div class="edu-card"><div class="edu-header"><div class="edu-icon"><i class="fas fa-graduation-cap"></i></div><div class="edu-title"><h3>MSA University</h3><div class="edu-date">2020 - 2024</div></div></div><div class="edu-body"><div class="edu-degree">B.Sc. Mechatronics Systems Engineering</div><div class="edu-university"><i class="fas fa-university"></i> Supervised by University of Greenwich, UK</div><div class="edu-gpa">📊 <span>GPA: 3.62 / 4.0</span></div></div></div></div></div></section>
 
@@ -600,9 +635,9 @@
         </div>
     </section>
 
-    <section id="projects"><div class="container"><h2 class="section-title">Intelligence Projects</h2><p style="text-align:center; color:#8b9ab0; margin-top:-2rem; margin-bottom:2rem; font-size:0.9rem;">Showing 10 highlighted projects · 30+ total built</p><div id="featuredProject"></div><div id="projectsGrid"></div></div></section>
+    <section id="projects"><div class="container"><h2 class="section-title">Intelligence Projects</h2><p style="text-align:center; color:#8b9ab0; margin-top:-2rem; margin-bottom:2rem; font-size:0.9rem;">Showing 10 highlighted projects · 30+ total built</p><div class="project-filters" id="projectFilters"></div><div id="featuredProject"></div><div id="projectsGrid"></div></div></section>
 
-    <section id="publication" style="padding: 3rem 0; margin-top: -2rem;"><div class="container"><h2 class="section-title">Publication</h2><div class="edu-card publication-clickable" id="publicationCard" style="max-width: 800px; margin: 0 auto; text-align: center;"><div class="edu-header" style="justify-content: center;"><div class="edu-icon"><i class="fas fa-file-pdf"></i></div><div class="edu-title"><h3>International Research Conference</h3><div class="edu-date">IUGRC 8 - 2024</div></div></div><div class="edu-body"><div class="edu-degree">Agri-Bot: AI-Powered Crop Disease Detection and Medication Recommendation Robot</div><div class="edu-university" style="justify-content: center;"><i class="fas fa-download"></i><span>Click to download full research paper (PDF)</span></div><!-- Publication certificate button added via JS later --></div></div></div></section>
+    <section id="publication" style="padding: 3rem 0; margin-top: -2rem;"><div class="container"><h2 class="section-title">Publication</h2><div class="edu-card publication-clickable" id="publicationCard" style="max-width: 800px; margin: 0 auto; text-align: center;"><div class="edu-header" style="justify-content: center;"><div class="edu-icon"><i class="fas fa-file-pdf"></i></div><div class="edu-title"><h3>International Research Conference</h3><div class="edu-date">IUGRC 8 - 2024</div></div></div><div class="edu-body"><div class="edu-degree">Agri-Bot: AI-Powered Crop Disease Detection and Medication Recommendation Robot</div><div class="edu-university" style="justify-content: center;"><i class="fas fa-download"></i><span>Click to download full research paper (PDF)</span></div></div></div></div></section>
 
     <section id="contact"><div class="container"><h2 class="section-title">Connect With Me</h2><div class="contact-creative"><a href="mailto:yousefahmed.ae20@gmail.com" class="hologram-card"><div class="hologram-icon"><i class="fas fa-envelope"></i></div><h3>Email</h3><div class="value">yousefahmed.ae20@gmail.com</div></a><a href="https://github.com/Yousef-koura" target="_blank" class="hologram-card"><div class="hologram-icon"><i class="fab fa-github"></i></div><h3>GitHub</h3><div class="value">github.com/Yousef-koura</div></a><a href="https://www.linkedin.com/in/yousefkoura" target="_blank" class="hologram-card"><div class="hologram-icon"><i class="fab fa-linkedin-in"></i></div><h3>LinkedIn</h3><div class="value">linkedin.com/in/yousefkoura</div></a></div></div></section>
 </div>
@@ -623,28 +658,47 @@
 
 <button id="backToTop" aria-label="Back to top">↑</button>
 
-<!-- Lightbox HTML -->
+<!-- Lightbox HTML with Escape hint -->
 <div id="lightbox" class="lightbox-overlay">
     <button id="lightboxClose" class="lightbox-close">✕</button>
+    <div style="position:fixed; top:1.5rem; left:50%; transform:translateX(-50%); color:rgba(255,255,255,0.25); font-size:0.7rem; font-family:'DM Sans',sans-serif; pointer-events:none; letter-spacing:0.5px;">ESC to close</div>
+    <div class="lightbox-spinner" id="lightboxSpinner"></div>
     <img id="lightboxImg" class="lightbox-img" alt="Certificate preview">
     <div id="lightboxCaption" class="lightbox-caption"></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-    // ========== LIGHTBOX JS ==========
+    // ========== LIGHTBOX JS with cursor fixes + hide custom cursors ==========
     const lightboxOverlay = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightboxImg');
     const lightboxCaption = document.getElementById('lightboxCaption');
     const lightboxCloseBtn = document.getElementById('lightboxClose');
+    const lightboxSpinner = document.getElementById('lightboxSpinner');
+    const customCursor = document.querySelector('.cursor');
+    const customCursorDot = document.querySelector('.cursor-dot');
     
     function openLightbox(src, caption) {
         if (!lightboxOverlay || !lightboxImg) return;
+        lightboxImg.style.opacity = '0';
+        if (lightboxSpinner) lightboxSpinner.style.display = 'block';
         lightboxImg.src = src;
         lightboxCaption.textContent = caption || '';
         lightboxOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
+        document.body.style.cursor = 'default';
+        if (customCursor) customCursor.style.opacity = '0';
+        if (customCursorDot) customCursorDot.style.opacity = '0';
     }
+    
+    lightboxImg.onload = () => {
+        if (lightboxSpinner) lightboxSpinner.style.display = 'none';
+        lightboxImg.style.opacity = '1';
+    };
+    lightboxImg.onerror = () => {
+        if (lightboxSpinner) lightboxSpinner.style.display = 'none';
+        lightboxImg.style.opacity = '1';
+    };
     
     function closeLightbox() {
         if (!lightboxOverlay) return;
@@ -652,20 +706,24 @@
         lightboxImg.src = '';
         lightboxCaption.textContent = '';
         document.body.style.overflow = '';
+        document.body.style.cursor = 'none';
+        if (customCursor) customCursor.style.opacity = '1';
+        if (customCursorDot) customCursorDot.style.opacity = '1';
+        if (lightboxSpinner) lightboxSpinner.style.display = 'none';
+        lightboxImg.style.opacity = '1';
     }
     
     if (lightboxCloseBtn) lightboxCloseBtn.addEventListener('click', closeLightbox);
     if (lightboxOverlay) lightboxOverlay.addEventListener('click', (e) => { if(e.target === lightboxOverlay) closeLightbox(); });
     document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeLightbox(); });
     
-    // ========== UPDATED TIMELINE DATA WITH CERTIFICATES ==========
+    // ========== TIMELINE DATA ==========
     const timelineData = [
         { date: "Jun 2024 - Aug 2024", title: "Machine Learning Engineer", org: "PioPetro", desc: "Petroleum AI applications • Virtual training program", cert: { src: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/piopetro.png", caption: "PioPetro — ML Engineer Certificate · 2024" } },
         { date: "Jul 2023 - Sep 2023", title: "AI/ML Intern", org: "Information Technology Institute (ITI)", desc: "Python, ML models, statistical foundations", cert: { src: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/ITI%20MLAl%20Certificate%20.png", caption: "ITI — AI/ML Internship Certificate · 2023" } },
         { date: "Aug 2023", title: "AI/ML Intern", org: "Digital HUB (D-HUB)", desc: "Breast Cancer Detection • 3rd Place Winner", cert: { src: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/dhub.png", caption: "D-HUB — AI/ML Internship Certificate · 2023" } }
     ];
     
-    // ========== UPDATED loadTimeline FUNCTION WITH CERTIFICATES ==========
     function loadTimeline() {
         const container = document.getElementById('timelineGrid');
         if (!container) return;
@@ -685,18 +743,18 @@
         observeNewReveals();
     }
     
-    // ========== FIXED PROJECTS DATA WITH UPDATED AGRI-BOT IMAGE URL ==========
+    // ========== PROJECTS DATA WITH CATEGORIES ==========
     const projectsData = [
-        { icon: "fas fa-seedling", title: "Agri-Bot", desc: "Autonomous crop disease detection • 96% accuracy • 20 FPS on Jetson Nano", tech: ["YOLOv8", "MobileNetV2", "Edge AI"], link: "https://github.com/Yousef-koura/AGRI-BOT", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/Agribot.png" },
-        { icon: "fas fa-chart-line", title: "FMCG Data Engineering Pipeline", desc: "Databricks live dashboard & ETL pipeline • Real-time analytics for FMCG industry", tech: ["Databricks", "PySpark", "Delta Lake", "Live Dashboard"], link: "https://github.com/Yousef-koura/FMCG_Data_Engineer_Project", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/FMCG%20dashboard.png" },
-        { icon: "fas fa-futbol", title: "Ball Tracking Robot", desc: "95% detection accuracy • sub-5cm tracking error • real-time visual servoing", tech: ["OpenCV", "PID Control", "Robotics"], link: "https://github.com/Yousef-koura/Ball-Tracking-Robot", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/ball%20tracking%20robot.png" },
-        { icon: "fas fa-shield-alt", title: "Steganography Detector", desc: "Hidden data detection using CNN • 90% classification accuracy", tech: ["CNN", "Deep Learning", "Image Forensics"], link: "https://github.com/Yousef-koura/Steganography-Detector", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/stegno%20project.jpg" },
-        { icon: "fas fa-ribbon", title: "Breast Cancer AI", desc: "95% accuracy • 3rd place challenge winner • early detection model", tech: ["Scikit-learn", "ML Models", "Classification"], link: "https://github.com/Yousef-koura/Breast-Cancer-Ai", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/breast%20cancer.jpg" },
-        { icon: "fas fa-brain", title: "Machine Learning Projects", desc: "8+ ML projects • regression, classification, clustering • best model: 94% accuracy on housing price prediction", tech: ["Python", "Pandas", "Scikit-learn"], link: "https://github.com/Yousef-koura/Machine-Learning-Projects", image: null },
-        { icon: "fas fa-comments", title: "Personal RAG Assistant", desc: "RAG-powered personal AI chatbot about Yousef Koura's profile • LangChain + FastAPI + ChromaDB", tech: ["LangChain", "ChromaDB", "Groq API", "FastAPI"], link: "https://github.com/Yousef-koura/personal-rag-assistant", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/personal_rag_assistant.png" },
-        { icon: "fas fa-lungs", title: "PneumoScan — Chest X-Ray Pneumonia Classifier", desc: "85.1% accuracy, 89.3% F1 score • Full DL lifecycle from raw data to deployed web app", tech: ["FastAPI", "ONNX Runtime", "PyTorch", "React.js"], link: "https://github.com/Yousef-koura/Deep_Learning_Projects/tree/main/PRJ-004_xray_CNN", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/pneumonia" },
-        { icon: "fas fa-leaf", title: "PotatoScan — AI Potato Disease Detector", desc: "CNN-based leaf disease detection • Full-stack web app with FastAPI + React", tech: ["TensorFlow", "Pillow", "FastAPI", "Uvicorn"], link: "https://github.com/Yousef-koura/Deep_Learning_Projects/tree/main/PRJ-003_Potato_Disease_CNN", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/plant_disease" },
-        { icon: "fas fa-database", title: "SQL Projects", desc: "15+ SQL exercises • window functions, CTEs, joins & query optimization • Interactive dashboard for bike share data", tech: ["SQL", "PostgreSQL", "MySQL", "Tableau"], link: "https://github.com/Yousef-koura/SQL_Projects", image: "https://raw.githubusercontent.com/Yousef-koura/SQL_Projects/main/prj-002_toman_bike_share/Dashboard.png" }
+        { icon: "fas fa-seedling", title: "Agri-Bot", desc: "Autonomous crop disease detection • 96% accuracy • 20 FPS on Jetson Nano", tech: ["YOLOv8", "MobileNetV2", "Edge AI"], link: "https://github.com/Yousef-koura/AGRI-BOT", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/Agribot.png", category: "Computer Vision" },
+        { icon: "fas fa-chart-line", title: "FMCG Data Engineering Pipeline", desc: "Databricks live dashboard & ETL pipeline • Real-time analytics for FMCG industry", tech: ["Databricks", "PySpark", "Delta Lake", "Live Dashboard"], link: "https://github.com/Yousef-koura/FMCG_Data_Engineer_Project", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/FMCG%20dashboard.png", category: "Data Engineering" },
+        { icon: "fas fa-futbol", title: "Ball Tracking Robot", desc: "95% detection accuracy • sub-5cm tracking error • real-time visual servoing", tech: ["OpenCV", "PID Control", "Robotics"], link: "https://github.com/Yousef-koura/Ball-Tracking-Robot", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/ball%20tracking%20robot.png", category: "Computer Vision" },
+        { icon: "fas fa-shield-alt", title: "Steganography Detector", desc: "Hidden data detection using CNN • 90% classification accuracy", tech: ["CNN", "Deep Learning", "Image Forensics"], link: "https://github.com/Yousef-koura/Steganography-Detector", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/stegno%20project.jpg", category: "Computer Vision" },
+        { icon: "fas fa-ribbon", title: "Breast Cancer AI", desc: "95% accuracy • 3rd place challenge winner • early detection model", tech: ["Scikit-learn", "ML Models", "Classification"], link: "https://github.com/Yousef-koura/Breast-Cancer-Ai", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/breast%20cancer.jpg", category: "ML" },
+        { icon: "fas fa-brain", title: "Machine Learning Projects", desc: "8+ ML projects • regression, classification, clustering • best model: 94% accuracy on housing price prediction", tech: ["Python", "Pandas", "Scikit-learn"], link: "https://github.com/Yousef-koura/Machine-Learning-Projects", image: null, category: "ML" },
+        { icon: "fas fa-comments", title: "Personal RAG Assistant", desc: "RAG-powered personal AI chatbot about Yousef Koura's profile • LangChain + FastAPI + ChromaDB", tech: ["LangChain", "ChromaDB", "Groq API", "FastAPI"], link: "https://github.com/Yousef-koura/personal-rag-assistant", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/personal_rag_assistant.png", category: "NLP" },
+        { icon: "fas fa-lungs", title: "PneumoScan — Chest X-Ray Pneumonia Classifier", desc: "85.1% accuracy, 89.3% F1 score • Full DL lifecycle from raw data to deployed web app", tech: ["FastAPI", "ONNX Runtime", "PyTorch", "React.js"], link: "https://github.com/Yousef-koura/Deep_Learning_Projects/tree/main/PRJ-004_xray_CNN", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/pneumonia", category: "Computer Vision" },
+        { icon: "fas fa-leaf", title: "PotatoScan — AI Potato Disease Detector", desc: "CNN-based leaf disease detection • Full-stack web app with FastAPI + React", tech: ["TensorFlow", "Pillow", "FastAPI", "Uvicorn"], link: "https://github.com/Yousef-koura/Deep_Learning_Projects/tree/main/PRJ-003_Potato_Disease_CNN", image: "https://raw.githubusercontent.com/Yousef-koura/yousefkoura.github.io/main/project_images/plant_disease", category: "Computer Vision" },
+        { icon: "fas fa-database", title: "SQL Projects", desc: "15+ SQL exercises • window functions, CTEs, joins & query optimization • Interactive dashboard for bike share data", tech: ["SQL", "PostgreSQL", "MySQL", "Tableau"], link: "https://github.com/Yousef-koura/SQL_Projects", image: "https://raw.githubusercontent.com/Yousef-koura/SQL_Projects/main/prj-002_toman_bike_share/Dashboard.png", category: "Data Engineering" }
     ];
     
     const skillsData = [
@@ -714,6 +772,14 @@
             observer.observe(el);
         });
     }
+
+    // Quotes
+    const quotes = ["\"From crop fields to data pipelines — AI built end to end.\"", "\"96% accuracy isn't just a number, it's a revolution.\"", "\"30 projects. One mission: build AI that works in the real world.\"", "\"Where mechatronics meets machine learning.\""];
+    let quoteIdx = 0, quoteEl = document.getElementById('creativeQuote');
+    quoteEl.style.opacity = '0';
+    quoteEl.innerHTML = quotes[0];
+    setTimeout(() => { quoteEl.style.opacity = '1'; }, 100);
+    setInterval(()=>{ quoteEl.style.opacity='0'; setTimeout(()=>{ quoteIdx=(quoteIdx+1)%quotes.length; quoteEl.innerHTML=quotes[quoteIdx]; quoteEl.style.opacity='1'; },300); },4000);
 
     // Typewriter effect
     const roles = ["Machine Learning", "Deep Learning", "Researcher", "Mechatronics Engineer", "Data Engineer"];
@@ -740,7 +806,6 @@
     }
     setTimeout(typeRole, 500);
 
-    // Scroll progress
     window.addEventListener('scroll', () => {
         const winScroll = window.scrollY;
         const height = document.documentElement.scrollHeight - window.innerHeight;
@@ -751,8 +816,6 @@
     });
     document.getElementById('backToTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-    // Tab system
-    let currentCategory = 0;
     function renderSkillPanel(categoryIndex) {
         const panel = document.getElementById('skillPanel');
         if (!panel) return;
@@ -785,30 +848,27 @@
         return null;
     }
 
+    function resetProjectFilters() {
+        const allBtn = document.querySelector('.filter-btn[data-filter="All"]');
+        if (allBtn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            allBtn.classList.add('active');
+        }
+        document.querySelectorAll('#projectsGrid .project-ai-card').forEach(c => c.style.display = 'flex');
+    }
+
     function loadProjects() {
-        // Featured project (first item)
         const featured = projectsData[0];
         let featuredImgHtml = '';
         if (featured.image) {
             featuredImgHtml = `<img src="${featured.image}" alt="${featured.title}" onerror="this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#0d3b2e,#0d4a3e);display:flex;align-items:center;justify-content:center;font-size:3.5rem;color:rgba(255,255,255,0.6)\'><i class=\'fas fa-seedling\'></i></div>'">`;
         } else {
             const grad = getGradientForProject(featured);
-            if (grad) {
-                featuredImgHtml = `<div style="width:100%; height:100%; background: linear-gradient(135deg, ${grad[0]}, ${grad[1]}); display:flex; align-items:center; justify-content:center; font-size:3.5rem; color:rgba(255,255,255,0.6)"><i class="${featured.icon}"></i></div>`;
-            } else {
-                featuredImgHtml = `<i class="${featured.icon}"></i>`;
-            }
+            featuredImgHtml = grad ? `<div style="width:100%; height:100%; background: linear-gradient(135deg, ${grad[0]}, ${grad[1]}); display:flex; align-items:center; justify-content:center; font-size:3.5rem; color:rgba(255,255,255,0.6)"><i class="${featured.icon}"></i></div>` : `<i class="${featured.icon}"></i>`;
         }
-        const featuredHTML = `
-            <a href="${featured.link}" target="_blank" class="featured-card reveal">
-                <div class="featured-badge">Featured</div>
-                <div class="featured-img">${featuredImgHtml}</div>
-                <div class="featured-content"><h3>${featured.title}</h3><p>${featured.desc}</p><div class="featured-tech">${featured.tech.map(t => `<span>${t}</span>`).join('')}</div><div style="color:#00d4aa;"><i class="fab fa-github"></i> View Repository →</div></div>
-            </a>
-        `;
+        const featuredHTML = `<a href="${featured.link}" target="_blank" class="featured-card reveal"><div class="featured-badge">Featured</div><div class="featured-img">${featuredImgHtml}</div><div class="featured-content"><h3>${featured.title}</h3><p>${featured.desc}</p><div class="featured-tech">${featured.tech.map(t => `<span>${t}</span>`).join('')}</div><div style="color:#00d4aa;"><i class="fab fa-github"></i> View Repository →</div></div></a>`;
         document.getElementById('featuredProject').innerHTML = featuredHTML;
         
-        // Remaining 9 projects in grid (index 1-9)
         const remaining = projectsData.slice(1);
         document.getElementById('projectsGrid').innerHTML = remaining.map((proj) => {
             let imgHtml = '';
@@ -816,20 +876,35 @@
                 imgHtml = `<img src="${proj.image}" alt="${proj.title}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`;
             } else {
                 const grad = getGradientForProject(proj);
-                if (grad) {
-                    imgHtml = `<div style="width:100%; height:100%; background: linear-gradient(135deg, ${grad[0]}, ${grad[1]}); display:flex; align-items:center; justify-content:center; font-size:3.5rem; color:rgba(255,255,255,0.6)"><i class="${proj.icon}"></i></div>`;
-                } else {
-                    imgHtml = `<i class="${proj.icon}"></i>`;
-                }
+                imgHtml = grad ? `<div style="width:100%; height:100%; background: linear-gradient(135deg, ${grad[0]}, ${grad[1]}); display:flex; align-items:center; justify-content:center; font-size:3.5rem; color:rgba(255,255,255,0.6)"><i class="${proj.icon}"></i></div>` : `<i class="${proj.icon}"></i>`;
             }
-            return `
-                <a href="${proj.link}" target="_blank" class="project-ai-card reveal">
-                    <div class="project-img-container">${imgHtml}</div>
-                    <div style="padding:1.5rem; flex:1; display:flex; flex-direction:column;"><h3>${proj.title}</h3><p style="color:#aaa; margin:0.5rem 0 1rem;">${proj.desc}</p><div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1rem;">${proj.tech.map(t => `<span style="background:rgba(0,212,170,0.15); padding:0.2rem 0.8rem; border-radius:20px; font-size:0.7rem; color:#00d4aa;">${t}</span>`).join('')}</div><div style="margin-top:auto; color:#00d4aa;"><i class="fab fa-github"></i> View Repository <span class="arrow">→</span></div></div>
-                </a>`;
+            return `<a href="${proj.link}" target="_blank" class="project-ai-card reveal" data-category="${proj.category}">
+                        <div class="project-img-container">${imgHtml}</div>
+                        <div style="padding:1.5rem; flex:1; display:flex; flex-direction:column;"><h3>${proj.title}</h3><p style="color:#aaa; margin:0.5rem 0 1rem;">${proj.desc}</p><div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1rem;">${proj.tech.map(t => `<span style="background:rgba(0,212,170,0.15); padding:0.2rem 0.8rem; border-radius:20px; font-size:0.7rem; color:#00d4aa;">${t}</span>`).join('')}</div><div style="margin-top:auto; color:#00d4aa;"><i class="fab fa-github"></i> View Repository <span class="arrow">→</span></div></div>
+                    </a>`;
         }).join('');
         
-        document.querySelectorAll('.project-img-container img').forEach(img => img.addEventListener('error', function() { this.style.display='none'; this.nextElementSibling.style.display='flex'; }));
+        document.querySelectorAll('.project-img-container img').forEach(img => img.addEventListener('error', function() { this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex'; }));
+        
+        const filtersContainer = document.getElementById('projectFilters');
+        const categories = ["All", "Computer Vision", "ML", "Data Engineering", "NLP"];
+        filtersContainer.innerHTML = categories.map(cat => `<button class="filter-btn ${cat === 'All' ? 'active' : ''}" data-filter="${cat}">${cat}</button>`).join('');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('#projectsGrid .project-ai-card');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const filter = btn.getAttribute('data-filter');
+                projectCards.forEach(card => {
+                    if (filter === 'All' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
         observeNewReveals();
     }
 
@@ -843,17 +918,15 @@
     setTimeout(()=>{ animateCounter(document.getElementById('projectsCount'),30); animateCounter(document.getElementById('certCount'),8); animateCounter(document.getElementById('pubCount'),1); },500);
     document.getElementById('downloadBtn').addEventListener('click',()=> window.open('https://github.com/Yousef-koura/yousefkoura.github.io/raw/main/Yousef_Ahmed_CV.pdf','_blank'));
     document.getElementById('publicationCard').addEventListener('click',(e)=> { 
-        // Only open PDF if the click target is NOT the certificate button
         if(!e.target.closest('.pub-cert-btn')) window.open('https://github.com/Yousef-koura/yousefkoura.github.io/raw/main/AgRobot_paper.pdf','_blank');
     });
 
-    // Add publication certificate button dynamically after DOM ready
     function addPubCertificateButton() {
         const pubBody = document.querySelector('#publicationCard .edu-body');
         if(pubBody && !document.querySelector('.pub-cert-btn')) {
             const certDiv = document.createElement('div');
             certDiv.className = 'pub-cert-btn';
-            certDiv.style.cssText = 'display:inline-flex; align-items:center; gap:0.4rem; margin-top:0.8rem; background:rgba(0,212,170,0.1); border:1px solid rgba(0,212,170,0.3); border-radius:20px; padding:0.3rem 0.9rem; font-size:0.75rem; color:#00d4aa; cursor:pointer; width:fit-content; margin-left:auto; margin-right:auto;';
+            certDiv.style.cssText = 'display:flex; align-items:center; gap:0.4rem; margin:0.8rem auto 0; background:rgba(0,212,170,0.1); border:1px solid rgba(0,212,170,0.3); border-radius:20px; padding:0.3rem 0.9rem; font-size:0.75rem; color:#00d4aa; cursor:pointer; width:fit-content;';
             certDiv.innerHTML = '<i class="fas fa-certificate"></i> View Publication Certificate';
             certDiv.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -863,31 +936,51 @@
         }
     }
 
-    // Custom cursor + quotes
     const cursor = document.querySelector('.cursor'), dot = document.querySelector('.cursor-dot');
-    document.addEventListener('mousemove',(e)=>{ cursor.style.left=e.clientX+'px'; cursor.style.top=e.clientY+'px'; dot.style.left=e.clientX+'px'; dot.style.top=e.clientY+'px'; });
-    const quotes = ["\"Training neural networks to see beyond human vision.\"","\"96% accuracy isn't just a number, it's a revolution.\"","\"Building AI that understands the language of crops.\"","\"Where mechatronics meets artificial intelligence.\""];
-    let quoteIdx=0, quoteEl=document.getElementById('creativeQuote');
-    quoteEl.style.opacity = '0';
-    quoteEl.innerHTML = quotes[0];
-    setTimeout(() => { quoteEl.style.opacity = '1'; }, 100);
-    setInterval(()=>{ quoteEl.style.opacity='0'; setTimeout(()=>{ quoteIdx=(quoteIdx+1)%quotes.length; quoteEl.innerHTML=quotes[quoteIdx]; quoteEl.style.opacity='1'; },300); },4000);
+    document.addEventListener('mousemove',(e)=>{ 
+        if (cursor && dot) {
+            cursor.style.left=e.clientX+'px'; 
+            cursor.style.top=e.clientY+'px'; 
+            dot.style.left=e.clientX+'px'; 
+            dot.style.top=e.clientY+'px';
+        }
+    });
 
-    // IntersectionObserver
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
     }, { threshold: 0.15 });
+    
+    // Reset project filter when leaving projects section
+    const projectsSection = document.querySelector('#projects');
+    const projectsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting && entry.boundingClientRect.bottom < 0) {
+                resetProjectFilters();
+            }
+        });
+    }, { threshold: 0 });
+    if (projectsSection) projectsObserver.observe(projectsSection);
+    
     document.querySelectorAll('.stat-neuron, .edu-card, .hologram-card, .summary-text, .soft-skill-card, .featured-card, .project-ai-card, .timeline-node').forEach(el => el.classList.add('reveal'));
     document.querySelectorAll('.reveal').forEach(el => { el.setAttribute('data-observed', '1'); observer.observe(el); });
 
-    // Nav smooth
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-container a');
     function updateActiveNav() { let current = ''; sections.forEach(section => { if(window.scrollY >= section.offsetTop - 150) current = section.getAttribute('id'); }); navLinks.forEach(link => { link.classList.remove('active-nav'); if(link.getAttribute('href') === `#${current}`) link.classList.add('active-nav'); }); }
     window.addEventListener('scroll', updateActiveNav);
+    
+    // Hamburger nav + close on link click
+    const hamburger = document.getElementById('navHamburger');
+    const navContainer = document.querySelector('.nav-container');
+    if (hamburger && navContainer) {
+        hamburger.addEventListener('click', () => navContainer.classList.toggle('open'));
+        document.querySelectorAll('.nav-container a').forEach(link => {
+            link.addEventListener('click', () => navContainer.classList.remove('open'));
+        });
+    }
+    
     document.querySelectorAll('.nav-container a, .footer-nav a').forEach(anchor => anchor.addEventListener('click', function(e){ e.preventDefault(); const target = document.querySelector(this.getAttribute('href')); if(target) target.scrollIntoView({behavior:'smooth'}); }));
 
-    // 3D Scene
     const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(75,500/500,0.1,1000), renderer = new THREE.WebGLRenderer({alpha:true});
     renderer.setSize(500,500); document.getElementById('hero3d').appendChild(renderer.domElement);
     const geometry = new THREE.IcosahedronGeometry(1,0);
@@ -902,7 +995,6 @@
     function animate3d(){ requestAnimationFrame(animate3d); icosahedron.rotation.x+=0.01; icosahedron.rotation.y+=0.02; particlesMesh.rotation.y+=0.005; renderer.render(scene,camera); }
     animate3d();
 
-    // Background particles
     const canvas = document.getElementById('particleCanvas'), ctx = canvas.getContext('2d');
     let w=innerWidth, h=innerHeight;
     function resize(){ w=innerWidth; h=innerHeight; canvas.width=w; canvas.height=h; }
